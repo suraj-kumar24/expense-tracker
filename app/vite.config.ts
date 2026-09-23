@@ -2,7 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// GitHub Pages serves the app from /<repo>/, so the build sets BASE=/expense-tracker/.
 export default defineConfig({
+  base: process.env.BASE || '/',
   plugins: [
     react(),
     VitePWA({

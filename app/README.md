@@ -30,3 +30,7 @@ npm run build    # production build + service worker in dist/
 - The prototype's screen list, variant switcher and phone frame are gone. On a phone the app fills the screen; on a wider screen it sits in a centred column.
 - Insights shows up to the last 3 months, never going back before the month you started tracking.
 - "Same-every-month" quick amounts are filed automatically on the 1st of each new month, starting the month after setup. They show up in a toast with Undo.
+
+## Deploying
+
+Every push to `main` runs `.github/workflows/deploy.yml`. It tests the app, builds it with `BASE=/<repo-name>/` and publishes it to GitHub Pages at `https://suraj-kumar24.github.io/expense-tracker/`. This needs a one-time setting in the repo: **Settings → Pages → Source: GitHub Actions**.
