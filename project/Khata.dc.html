@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-44ca7e89-3b07-4703-82ee-717ea9ece9c9/styles.css">
+<script src="_ds/organic-44ca7e89-3b07-4703-82ee-717ea9ece9c9/_ds_bundle.js"></script>
+<style>body{margin:0}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}input[type=range]{accent-color:var(--color-accent)}</style>
+</helmet>
+<div style="min-height:{{ pageMinH }};display:flex;gap:36px;justify-content:center;align-items:flex-start;padding:{{ pagePad }};background:{{ pageBg }};font-family:var(--font-body);color:var(--color-text)">
+<sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+<div style="width:220px;flex:none;display:flex;flex-direction:column;gap:6px;padding-top:12px">
+<div style="font-family:var(--font-heading);font-size:26px;line-height:1">Khata</div>
+<div style="font-size:12px;color:var(--color-neutral-700);margin-bottom:14px">Clickable prototype · jump to any screen</div>
+<sc-for list="{{ railItems }}" as="r" hint-placeholder-count="9">
+<button onClick="{{ r.onClick }}" style="text-align:left;font:600 13px var(--font-body);padding:9px 14px;border-radius:999px;border:1px solid var(--color-divider);background:{{ r.bg }};color:{{ r.fg }};cursor:pointer" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.98)">{{ r.label }}</button>
+</sc-for>
+<div style="font-size:12px;color:var(--color-neutral-700);margin:16px 0 4px">Logging interaction</div>
+<div style="display:flex;gap:6px">
+<sc-for list="{{ variantItems }}" as="v" hint-placeholder-count="2">
+<button onClick="{{ v.onClick }}" style="flex:1;font:600 12px var(--font-body);padding:8px 10px;border-radius:999px;border:1px solid var(--color-divider);background:{{ v.bg }};color:{{ v.fg }};cursor:pointer" style-hover="border-color:var(--color-accent)">{{ v.label }}</button>
+</sc-for>
+</div>
+<div style="font-size:12px;color:var(--color-neutral-700);line-height:1.45;margin-top:8px">{{ variantNote }}</div>
+</div>
+</sc-if>
+<div style="width:392px;height:850px;flex:none;border-radius:48px;border:10px solid var(--color-neutral-900);background:var(--color-bg);position:relative;overflow:hidden;box-shadow:var(--shadow-lg)">
+<div style="position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font:600 13px var(--font-body);z-index:5;background:var(--color-bg)">
+<span>9:41</span>
+<span style="width:12px;height:12px;border-radius:50%;background:var(--color-neutral-900)"></span>
+<span style="display:flex;gap:5px;align-items:center"><span style="width:14px;height:10px;border-radius:2px;background:var(--color-neutral-800)"></span><span style="width:20px;height:10px;border-radius:3px;border:1.5px solid var(--color-neutral-800)"></span></span>
+</div>
+<div ref="{{ scRef }}" style="position:absolute;top:34px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none">
+<sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:806px;padding:24px 24px 28px;display:flex;flex-direction:column;gap:18px">
+<div style="position:relative;height:300px">
+<div style="position:absolute;left:0;top:10px;width:200px;height:200px;border-radius:50%;background:var(--color-accent-300)"></div>
+<div style="position:absolute;left:150px;top:90px;width:150px;height:150px;border-radius:50%;background:var(--color-accent-2-300)"></div>
+<div style="position:absolute;left:70px;top:200px;width:92px;height:92px;border-radius:50%;background:var(--color-surface)"></div>
+<span style="position:absolute;left:62px;top:62px;font-size:72px">🏠</span><span style="position:absolute;left:198px;top:132px;font-size:56px">🍜</span><span style="position:absolute;left:94px;top:222px;font-size:40px">🛺</span>
+</div>
+<div><div style="font-family:var(--font-heading);font-size:44px;line-height:1">Khata</div><div style="font-size:20px;font-weight:600;line-height:1.3;margin-top:8px;text-wrap:pretty">See where your money goes each month — one category at a time.</div></div>
+<div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+<div style="display:flex;gap:10px;align-items:center"><span style="width:36px;height:36px;border-radius:50%;background:var(--color-accent-2-200);display:grid;place-items:center;flex:none;color:var(--color-accent-2-800)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"></rect><path d="M12 18h.01"></path></svg></span><span><b>Works offline.</b> Everything is saved on this phone. No account, no sign-in.</span></div>
+<div style="display:flex;gap:10px;align-items:center"><span style="width:36px;height:36px;border-radius:50%;background:var(--color-accent-200);display:grid;place-items:center;flex:none;font-size:17px">⚡</span><span><b>Log in seconds.</b> Tap an amount, tap a category, done.</span></div>
+</div>
+<span style="flex:1"></span>
+<button onClick="{{ goSetupCats }}" style="height:58px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:19px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Set up my categories</button>
+</div>
+</sc-if>
+<sc-if value="{{ isSetupCats }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 18px 28px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:8px"><button onClick="{{ goWelcome }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button><span style="flex:1;font-size:13px;font-weight:700;color:var(--color-neutral-700)">Step 1 of 2</span><span style="display:flex;gap:4px"><span style="width:24px;height:6px;border-radius:999px;background:var(--color-accent)"></span><span style="width:24px;height:6px;border-radius:999px;background:var(--color-neutral-300)"></span></span></div>
+<div><h3 style="margin:0">What do you spend on?</h3><div style="font-size:14px;color:var(--color-neutral-700)">Pick as many as you like. {{ selCount }}.</div></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<sc-for list="{{ presets }}" as="p" hint-placeholder-count="12">
+<button onClick="{{ p.onClick }}" aria-pressed="{{ p.on }}" style="position:relative;height:88px;border-radius:24px;border:2px solid {{ p.tileBd }};background:{{ p.tileBg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;font:600 13px var(--font-body);color:var(--color-text)" style-hover="border-color:var(--color-accent-400)" style-active="transform:scale(.95)"><span style="font-size:30px;line-height:1">{{ p.emoji }}</span>{{ p.name }}<sc-if value="{{ p.on }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:7px;right:7px;width:20px;height:20px;border-radius:50%;background:var(--color-accent);display:grid;place-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-100)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if></button>
+</sc-for>
+</div>
+<div style="display:flex;gap:6px;align-items:center;padding:6px;border-radius:999px;background:var(--color-surface)">
+<input value="{{ customEmoji }}" onChange="{{ onCustomEmoji }}" placeholder="🙂" aria-label="Emoji" maxLength="4" style="width:48px;height:44px;border-radius:999px;border:none;background:var(--color-neutral-100);text-align:center;font-size:20px">
+<input value="{{ customName }}" onChange="{{ onCustomName }}" placeholder="Your own category" aria-label="Category name" style="flex:1;min-width:0;height:44px;border-radius:999px;border:none;background:var(--color-neutral-100);padding:0 14px;font:500 14px var(--font-body);color:var(--color-text)">
+<button onClick="{{ addCustom }}" style="height:44px;padding:0 16px;border-radius:999px;border:none;background:var(--color-neutral-900);color:var(--color-neutral-100);font:700 14px var(--font-body);cursor:pointer" style-hover="background:var(--color-neutral-800)" style-active="background:var(--color-neutral-700)">Add</button>
+</div>
+<div><h5 style="margin:0">Subcategories</h5><div style="font-size:13px;color:var(--color-neutral-700)">Optional, one level deep — e.g. Rent and Electricity under Housing.</div></div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ setupCats }}" as="c" hint-placeholder-count="4">
+<div style="padding:10px 12px;border-radius:22px;background:var(--color-neutral-100);display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:20px">{{ c.emoji }}</span><b style="font-size:14px;margin-right:4px">{{ c.name }}</b>
+<sc-for list="{{ c.subItems }}" as="s" hint-placeholder-count="0"><span style="display:flex;align-items:center;gap:2px;height:30px;padding:0 2px 0 10px;border-radius:999px;background:var(--color-surface);font-size:12px;font-weight:600">{{ s.n }}<button onClick="{{ s.onRemove }}" aria-label="Remove" style="width:26px;height:26px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--color-neutral-700)" style-hover="background:var(--color-neutral-300)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span></sc-for>
+<button onClick="{{ c.startSub }}" style="height:30px;padding:0 10px;border-radius:999px;border:1.5px dashed var(--color-neutral-400);background:transparent;font:600 12px var(--font-body);color:var(--color-accent-700);cursor:pointer" style-hover="border-color:var(--color-accent);background:var(--color-accent-100)">+ sub</button>
+</div>
+<sc-if value="{{ c.adding }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:6px"><input value="{{ subDraft }}" onChange="{{ onSubDraft }}" placeholder="Subcategory name" aria-label="Subcategory name" style="flex:1;min-width:0;height:40px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-bg);padding:0 14px;font:500 14px var(--font-body)"><button onClick="{{ c.saveSub }}" style="height:40px;padding:0 14px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font:700 13px var(--font-body);cursor:pointer" style-hover="background:var(--color-accent-600)">Add</button><button onClick="{{ cancelSub }}" style="height:40px;padding:0 10px;border-radius:999px;border:none;background:transparent;font:600 13px var(--font-body);cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button></div></sc-if>
+</div>
+</sc-for>
+</div>
+<button onClick="{{ goSetupBudgets }}" style="height:58px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:19px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Next: set budgets</button>
+</div>
+</sc-if>
+<sc-if value="{{ isSetupBudgets }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 18px 28px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:8px"><button onClick="{{ goSetupCats }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button><span style="flex:1;font-size:13px;font-weight:700;color:var(--color-neutral-700)">Step 2 of 2</span><span style="display:flex;gap:4px"><span style="width:24px;height:6px;border-radius:999px;background:var(--color-accent)"></span><span style="width:24px;height:6px;border-radius:999px;background:var(--color-accent)"></span></span></div>
+<div><h3 style="margin:0">Monthly budgets</h3><div style="font-size:14px;color:var(--color-neutral-700)">The most you want to spend on each. Total <b style="color:var(--color-text)">{{ setupBudgetTotal }}</b>.</div></div>
+<sc-for list="{{ setupCats }}" as="c" hint-placeholder-count="5">
+<div style="padding:12px 14px;border-radius:24px;background:var(--color-neutral-100);display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">{{ c.emoji }}</span><b style="flex:1;font-size:15px">{{ c.name }}</b>
+<label style="display:flex;align-items:center;gap:2px;height:44px;width:128px;padding:0 14px;border-radius:999px;background:var(--color-surface);font-weight:700">₹<input value="{{ c.budgetVal }}" onChange="{{ c.onBudget }}" inputMode="numeric" aria-label="Budget" style="width:100%;border:none;background:transparent;font:700 15px var(--font-body);color:var(--color-text);text-align:right;outline:none"></label>
+</div>
+<sc-for list="{{ c.recs }}" as="q" hint-placeholder-count="0">
+<button onClick="{{ q.toggle }}" style="display:flex;align-items:center;gap:8px;min-height:40px;padding:4px 6px 4px 12px;border-radius:999px;border:none;background:{{ q.recBg }};cursor:pointer;font-family:var(--font-body);text-align:left" style-hover="filter:brightness(.97)" style-active="filter:brightness(.92)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ q.recFg }}" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"></path></svg><span style="flex:1;font-size:13px;font-weight:600;color:var(--color-text)">{{ q.label }} · {{ q.amtText }}</span><span style="font-size:11px;font-weight:700;color:{{ q.recFg }};padding:3px 9px;border-radius:999px;background:var(--color-neutral-100)">{{ q.recLabel }}</span></button>
+</sc-for>
+<sc-if value="{{ c.addingRec }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:6px"><input value="{{ draftA }}" onChange="{{ onDraftA }}" placeholder="e.g. Rent" aria-label="Label" style="flex:1;min-width:0;height:40px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-bg);padding:0 12px;font:500 13px var(--font-body)"><input value="{{ draftB }}" onChange="{{ onDraftB }}" placeholder="₹" inputMode="decimal" aria-label="Amount" style="width:82px;height:40px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-bg);padding:0 12px;font:500 13px var(--font-body)"><button onClick="{{ c.saveRec }}" style="height:40px;padding:0 12px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font:700 13px var(--font-body);cursor:pointer" style-hover="background:var(--color-accent-600)">Add</button></div></sc-if>
+<button onClick="{{ c.startRec }}" style="align-self:flex-start;height:32px;padding:0 10px;border-radius:999px;border:none;background:transparent;font:600 12px var(--font-body);color:var(--color-accent-700);cursor:pointer" style-hover="background:var(--color-accent-100)">+ Same-every-month amount</button>
+</div>
+</sc-for>
+<button onClick="{{ goOverview }}" style="height:58px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:19px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Start tracking</button>
+</div>
+</sc-if>
+<sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+<div style="padding:10px 18px 120px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:8px">
+<div style="flex:1;min-width:0">
+<div style="font-size:13px;font-weight:600;color:var(--color-neutral-700)">{{ dateText }}</div>
+<div style="font-family:var(--font-heading);font-size:24px;line-height:1.15">{{ daysLeftText }}</div>
+</div>
+<button onClick="{{ goInsights }}" aria-label="Insights" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg></button>
+<button onClick="{{ goSettings }}" aria-label="Settings" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"></path></svg></button>
+</div>
+<div style="background:var(--color-neutral-900);color:var(--color-neutral-100);border-radius:32px;padding:20px 22px 18px;display:flex;flex-direction:column;gap:10px">
+<div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-400);font-weight:600">Spent in September</div>
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font-family:var(--font-heading);font-size:44px;line-height:1">{{ spentTotal }}</span>
+<span style="font-size:14px;color:var(--color-neutral-300);white-space:nowrap">of {{ budgetTotal }}</span>
+</div>
+<div style="position:relative;height:12px;border-radius:999px;background:var(--color-neutral-800);overflow:visible">
+<div style="position:absolute;left:0;top:0;bottom:0;width:{{ totalBarW }};border-radius:999px;background:var(--color-accent-400)"></div>
+<div title="Today" style="position:absolute;top:-4px;bottom:-4px;left:{{ monthPaceW }};width:3px;border-radius:2px;background:var(--color-neutral-100)"></div>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--color-neutral-300)"><span>{{ totalPct }}</span><span style="font-weight:700;color:var(--color-neutral-100)">{{ leftTotal }}</span></div>
+</div>
+<sc-if value="{{ wantsOk }}" hint-placeholder-val="{{ true }}">
+<div style="background:var(--color-accent-2-200);border-radius:32px;padding:18px 22px;display:flex;align-items:center;gap:14px">
+<div style="flex:1;min-width:0">
+<div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-2-800);font-weight:700">Wants allowance {{ wantsNames }}</div>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:var(--font-heading);font-size:36px;line-height:1.1;color:var(--color-accent-2-900)">{{ wantsPerDay }}</span><span style="font-size:15px;font-weight:600;color:var(--color-accent-2-800)">/ day</span></div>
+<div style="font-size:13px;color:var(--color-accent-2-800)">{{ wantsLeftText }}</div>
+</div>
+<div style="width:64px;height:64px;border-radius:50%;background:var(--color-accent-2-500);color:var(--color-accent-2-100);display:grid;place-items:center;text-align:center;line-height:1;flex:none"><div><div style="font-family:var(--font-heading);font-size:24px">8</div><div style="font-size:10px;font-weight:700">DAYS</div></div></div>
+</div>
+</sc-if>
+<sc-if value="{{ wantsOut }}" hint-placeholder-val="{{ false }}">
+<div style="background:oklch(0.93 0.045 18);border-radius:32px;padding:18px 22px;display:flex;flex-direction:column;gap:4px">
+<div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:oklch(0.44 0.17 20);font-weight:700">Wants allowance {{ wantsNames }}</div>
+<div style="font-family:var(--font-heading);font-size:28px;line-height:1.1;color:oklch(0.38 0.15 20)">Wants are spent</div>
+<div style="font-size:13px;color:oklch(0.4 0.15 20)">{{ wantsOverText }} · {{ wantsDaysText }}</div>
+</div>
+</sc-if>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:6px">
+<h4 style="margin:0">Categories</h4>
+<span style="font-size:12px;color:var(--color-neutral-700);display:flex;align-items:center;gap:5px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"></rect><path d="M12 18h.01"></path></svg>Saved on this phone</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ catViews }}" as="c" hint-placeholder-count="6">
+<button onClick="{{ c.onClick }}" style="display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:12px 14px;border:none;border-radius:24px;background:var(--color-neutral-100);cursor:pointer;font-family:var(--font-body);color:var(--color-text)" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200);transform:scale(.99)">
+<span style="width:44px;height:44px;flex:none;border-radius:50%;background:var(--color-surface);display:grid;place-items:center;font-size:22px">{{ c.emoji }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+<span style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-size:15px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.name }}</span><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:{{ c.tagBg }};color:{{ c.tagFg }};white-space:nowrap">{{ c.tagText }}</span></span>
+<sc-if value="{{ c.hasSubs }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--color-neutral-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.subsText }}</span></sc-if>
+<span style="height:8px;border-radius:999px;background:var(--color-neutral-300);overflow:hidden;display:block"><span style="display:block;height:100%;width:{{ c.barW }};background:{{ c.bar }};border-radius:999px"></span></span>
+<span style="font-size:12px;color:var(--color-neutral-700)"><b style="color:var(--color-text)">{{ c.spentText }}</b> of {{ c.budgetText }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ isInsights }}" hint-placeholder-val="{{ false }}">
+<div style="padding:10px 18px 40px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px">
+<button onClick="{{ goOverview }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button>
+<h3 style="margin:0;flex:1">Insights</h3>
+</div>
+<div style="display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--color-surface)">
+<sc-for list="{{ monthTabs }}" as="t" hint-placeholder-count="3"><button onClick="{{ t.onClick }}" style="flex:1;height:40px;border-radius:999px;border:none;background:{{ t.bg }};color:{{ t.fg }};font:700 14px var(--font-body);cursor:pointer" style-hover="outline:1.5px solid var(--color-accent);outline-offset:-2px" style-active="transform:scale(.97)">{{ t.label }}</button></sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:18px">
+<div style="width:156px;height:156px;flex:none;border-radius:50%;background:{{ donutBg }};display:grid;place-items:center">
+<div style="width:98px;height:98px;border-radius:50%;background:var(--color-bg);display:grid;place-items:center;text-align:center"><div><div style="font-size:11px;font-weight:700;color:var(--color-neutral-700)">{{ insMonth }}</div><div style="font-family:var(--font-heading);font-size:19px;line-height:1.1">{{ insTotal }}</div></div></div>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">Biggest slice</div>
+<div style="font-size:34px;line-height:1">{{ insTop.emoji }}</div>
+<div style="font-family:var(--font-heading);font-size:20px;line-height:1.15">{{ insTop.name }} takes {{ insTop.pct }}</div>
+<div style="font-size:13px;color:var(--color-neutral-700)">{{ insTop.amt }} of {{ insTotal }}</div>
+<div style="font-size:12px;font-weight:700;color:{{ insTotalDiffFg }}">{{ insTotalDiff }}</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<h5 style="margin:0 0 2px">Largest first</h5>
+<sc-for list="{{ insRanked }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:20px;background:var(--color-neutral-100)">
+<span style="width:12px;height:12px;border-radius:50%;background:{{ r.dot }};flex:none"></span>
+<span style="font-size:20px">{{ r.emoji }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="display:flex;justify-content:space-between;gap:6px;font-size:14px"><b>{{ r.name }}</b><span style="font-weight:700">{{ r.pct }}</span></span><span style="height:6px;border-radius:999px;background:var(--color-neutral-300);display:block;overflow:hidden"><span style="display:block;height:100%;width:{{ r.w }};background:{{ r.dot }};border-radius:999px"></span></span></span>
+<span style="width:78px;text-align:right;font-size:13px;color:var(--color-neutral-800)">{{ r.amt }}</span>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<h5 style="margin:0 0 2px">Compared with last month</h5>
+<sc-if value="{{ insHasPrev }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ insIsPartial }}" hint-placeholder-val="{{ true }}"><div style="font-size:12px;color:var(--color-neutral-700);margin-bottom:2px">September so far vs all of {{ insPrevLabel }}. ▲ red = spent more, ▼ green = spent less.</div></sc-if>
+<sc-for list="{{ insCompare }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:20px;background:var(--color-neutral-100)">
+<span style="font-size:20px">{{ r.emoji }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px">{{ r.name }}</b><span style="font-size:12px;color:var(--color-neutral-700)">{{ r.now }} · was {{ r.prev }}</span></span>
+<span style="display:flex;flex-direction:column;align-items:flex-end;padding:4px 10px;border-radius:14px;background:{{ r.bg }};color:{{ r.fg }}"><b style="font-size:13px">{{ r.diffText }}</b><span style="font-size:10px;font-weight:600">{{ r.verdict }}</span></span>
+</div>
+</sc-for>
+</sc-if>
+<sc-if value="{{ insFirst }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px;border-radius:28px;background:var(--color-accent-2-100);color:var(--color-accent-2-900);display:flex;flex-direction:column;gap:4px"><div style="font-size:28px">🌱</div><b style="font-family:var(--font-heading);font-weight:400;font-size:18px">July is your first month</b><span style="font-size:13px">There’s nothing earlier to compare with yet. From August on, each category shows whether you spent more or less.</span></div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+<div style="padding:10px 18px 40px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px">
+<button onClick="{{ goOverview }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button>
+<span style="flex:1"></span>
+<button onClick="{{ openRename }}" aria-label="Edit name and emoji" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg></button>
+</div>
+<div style="display:flex;align-items:center;gap:14px">
+<span style="width:72px;height:72px;border-radius:50%;background:var(--color-surface);display:grid;place-items:center;font-size:38px;flex:none">{{ d.emoji }}</span>
+<div style="flex:1;min-width:0"><h2 style="margin:0">{{ d.name }}</h2><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:{{ d.tagBg }};color:{{ d.tagFg }}">{{ d.tagText }}</span></div>
+</div>
+<div style="background:var(--color-neutral-100);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-family:var(--font-heading);font-size:34px;line-height:1">{{ d.spentText }}</span><span style="font-size:14px;color:var(--color-neutral-700)">of {{ d.budgetText }}</span></div>
+<div style="height:12px;border-radius:999px;background:var(--color-neutral-300);overflow:hidden"><div style="height:100%;width:{{ d.barW }};background:{{ d.bar }};border-radius:999px"></div></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<div><div style="font-size:11px;font-weight:700;color:var(--color-neutral-700)">USED</div><div style="font-weight:700">{{ d.pctText }}</div></div>
+<div><div style="font-size:11px;font-weight:700;color:var(--color-neutral-700)">LEFT</div><div style="font-weight:700;color:{{ d.tagFg }}">{{ d.leftText }}</div></div>
+<div><div style="font-size:11px;font-weight:700;color:var(--color-neutral-700)">ENTRIES</div><div style="font-weight:700">{{ d.count }}</div></div>
+</div>
+<div style="display:flex;gap:8px">
+<button onClick="{{ openBudget }}" style="flex:1;height:44px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:15px;color:var(--color-text);cursor:pointer" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)">Edit budget</button>
+<button onClick="{{ dLogHere }}" style="flex:1;height:44px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:15px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">+ Log here</button>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;justify-content:space-between"><h5 style="margin:0">Subcategories</h5><button onClick="{{ openSub }}" style="height:36px;padding:0 12px;border-radius:999px;border:none;background:transparent;color:var(--color-accent-700);font:700 13px var(--font-body);cursor:pointer" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">+ Add</button></div>
+<sc-if value="{{ dHasSubs }}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ dSubs }}" as="s" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:20px;background:var(--color-neutral-100)"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="display:flex;justify-content:space-between;font-size:14px"><b>{{ s.name }}</b><span>{{ s.spentText }} · {{ s.share }}</span></span><span style="height:6px;border-radius:999px;background:var(--color-neutral-300);display:block;overflow:hidden"><span style="display:block;height:100%;width:{{ s.w }};background:var(--color-accent-2);border-radius:999px"></span></span></span></div>
+</sc-for>
+<sc-if value="{{ dUnfiled }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:var(--color-neutral-700);padding-left:14px">{{ dUnfiledText }} not filed under a subcategory</div></sc-if>
+</sc-if>
+<sc-if value="{{ dNoSubs }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--color-neutral-700);padding:12px 14px;border-radius:20px;border:1.5px dashed var(--color-neutral-400)">No subcategories. Add one to split this category, e.g. Rent and Electricity under Housing.</div></sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;justify-content:space-between"><h5 style="margin:0">Quick amounts</h5><button onClick="{{ openQuick }}" style="height:36px;padding:0 12px;border-radius:999px;border:none;background:transparent;color:var(--color-accent-700);font:700 13px var(--font-body);cursor:pointer" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">+ Add</button></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ dQuick }}" as="q" hint-placeholder-count="2">
+<span style="display:flex;align-items:center;gap:4px;height:38px;padding:0 4px 0 14px;border-radius:999px;background:var(--color-accent-2-200);color:var(--color-accent-2-900);font-size:13px;font-weight:600">⚡ {{ q.label }} {{ q.amtText }}<sc-if value="{{ q.rec }}" hint-placeholder-val="{{ false }}"><span title="Every month" style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;background:var(--color-accent-2-100)">monthly</span></sc-if><button onClick="{{ q.onRemove }}" aria-label="Remove quick amount" style="width:30px;height:30px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:inherit" style-hover="background:var(--color-accent-2-300)" style-active="background:var(--color-accent-2-400)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span>
+</sc-for>
+<sc-if value="{{ dNoQuick }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:var(--color-neutral-700)">None yet — add amounts you pay often for one-tap logging.</span></sc-if>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<h5 style="margin:0 0 2px">Entries this month</h5>
+<sc-if value="{{ dHasEntries }}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ dEntries }}" as="e" hint-placeholder-count="4">
+<button onClick="{{ e.onEdit }}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:20px;border:none;background:var(--color-neutral-100);text-align:left;cursor:pointer;font-family:var(--font-body);color:var(--color-text)" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">
+<span style="width:48px;font-size:12px;font-weight:700;color:var(--color-neutral-700)">{{ e.dateText }}</span>
+<span style="flex:1;font-size:14px">{{ e.label }}</span>
+<b style="font-size:14px">{{ e.amtText }}</b>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-600)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>
+</button>
+</sc-for>
+</sc-if>
+<sc-if value="{{ dNoEntries }}" hint-placeholder-val="{{ false }}">
+<div style="padding:24px 20px;border-radius:28px;background:var(--color-neutral-100);display:flex;flex-direction:column;align-items:flex-start;gap:6px"><span style="font-size:30px">{{ d.emoji }}</span><b style="font-family:var(--font-heading);font-weight:400;font-size:18px">Nothing spent here yet</b><span style="font-size:13px;color:var(--color-neutral-700)">The full {{ d.budgetText }} is still available this month.</span></div>
+</sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+<button onClick="{{ openMerge }}" style="height:48px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:15px;color:var(--color-text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>Merge into another category</button>
+<button onClick="{{ openDelete }}" style="height:48px;border-radius:999px;border:none;background:transparent;font:700 14px var(--font-body);color:oklch(0.44 0.17 20);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:oklch(0.93 0.045 18)" style-active="background:oklch(0.88 0.07 18)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>Delete category</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+<div style="padding:10px 18px 40px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px">
+<button onClick="{{ goOverview }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--color-surface);display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button>
+<h3 style="margin:0">Settings</h3>
+</div>
+<div style="background:var(--color-neutral-100);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+<h5 style="margin:0">Warning levels</h5>
+<div style="font-size:13px;color:var(--color-neutral-700);margin-top:-6px">Applied to every category.</div>
+<div style="display:flex;height:22px;border-radius:999px;overflow:hidden;font-size:11px;font-weight:700">
+<div style="width:{{ zoneA }};background:var(--color-accent-2);color:var(--color-accent-2-100);display:flex;align-items:center;padding-left:10px">Normal</div>
+<div style="width:{{ zoneB }};background:oklch(0.79 0.15 78);color:oklch(0.3 0.07 65);display:flex;align-items:center;justify-content:center;overflow:hidden">Amber</div>
+<div style="width:{{ zoneC }};background:oklch(0.5 0.18 18);color:var(--color-neutral-100);display:flex;align-items:center;justify-content:center;overflow:hidden">Red</div>
+</div>
+<label style="display:flex;flex-direction:column;gap:2px"><span style="display:flex;justify-content:space-between;font-size:14px;font-weight:600"><span>Amber from</span><b style="color:oklch(0.44 0.09 65)">{{ thrXText }}</b></span><input type="range" min="10" max="95" step="5" value="{{ thrX }}" onChange="{{ onThrX }}" style="width:100%;height:28px"></label>
+<label style="display:flex;flex-direction:column;gap:2px"><span style="display:flex;justify-content:space-between;font-size:14px;font-weight:600"><span>Red from</span><b style="color:oklch(0.44 0.17 20)">{{ thrYText }}</b></span><input type="range" min="15" max="100" step="5" value="{{ thrY }}" onChange="{{ onThrY }}" style="width:100%;height:28px"></label>
+<div style="display:flex;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:700">
+<span style="padding:4px 10px;border-radius:999px;background:var(--color-accent-2-100);color:var(--color-accent-2-800)">{{ stNormal }} on track</span>
+<span style="padding:4px 10px;border-radius:999px;background:oklch(0.95 0.06 88);color:oklch(0.44 0.09 65)">{{ stAmber }} amber</span>
+<span style="padding:4px 10px;border-radius:999px;background:oklch(0.93 0.045 18);color:oklch(0.44 0.17 20)">{{ stRed }} red or over</span>
+</div>
+<div style="font-size:12px;color:var(--color-neutral-700);margin-top:-4px">Red always stays at least 5% above amber.</div>
+</div>
+<div style="background:var(--color-neutral-100);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><h5 style="margin:0">Wants</h5><b style="font-size:14px">{{ wantsBudget }} / month</b></div>
+<div style="font-size:13px;color:var(--color-neutral-700);margin-top:-4px">Tap the categories that count as Wants. Their budgets add up to the Wants budget used for your daily allowance.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ wantsToggle }}" as="w" hint-placeholder-count="6"><button onClick="{{ w.onClick }}" style="height:38px;padding:0 13px 0 9px;border-radius:999px;border:1.5px solid {{ w.bd }};background:{{ w.bg }};color:{{ w.fg }};font:600 13px var(--font-body);cursor:pointer;display:flex;align-items:center;gap:5px" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.96)"><span style="font-size:17px">{{ w.emoji }}</span>{{ w.name }}</button></sc-for>
+</div>
+</div>
+<div style="background:var(--color-neutral-100);border-radius:32px;padding:6px 20px">
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--color-divider);font-size:14px"><span>Currency</span><b>₹ Indian Rupee</b></div>
+<div style="display:flex;justify-content:space-between;padding:12px 0;font-size:14px"><span>Month starts on</span><b>1st</b></div>
+</div>
+<div style="background:var(--color-accent-2-200);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;color:var(--color-accent-2-900)">
+<div style="display:flex;align-items:center;gap:10px"><span style="width:40px;height:40px;border-radius:50%;background:var(--color-accent-2-100);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"></rect><path d="M12 18h.01"></path></svg></span><h5 style="margin:0">Everything stays on this phone</h5></div>
+<div style="font-size:13px;line-height:1.5">No account, no login, no internet. Your {{ entryTotal }} are saved in the app’s storage on this device as you make them. Uninstalling the app deletes them — export a CSV to keep a copy.</div>
+<button onClick="{{ exportCsv }}" style="height:46px;border-radius:999px;border:none;background:var(--color-accent-2-700);color:var(--color-accent-2-100);font-family:var(--font-heading);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:var(--color-accent-2-800)" style-active="background:var(--color-accent-2-900)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5"></path></svg>Export CSV</button>
+</div>
+<button onClick="{{ goWelcome }}" style="height:48px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:15px;color:var(--color-text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Replay setup</button>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ openLog }}" style="position:absolute;right:18px;bottom:22px;height:60px;padding:0 24px 0 18px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:18px;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:var(--shadow-lg);z-index:4" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700);transform:scale(.97)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M5 12h14M12 5v14"></path></svg>Log expense</button>
+</sc-if>
+<sc-if value="{{ logOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeLog }}" style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-neutral-900) 45%,transparent);z-index:10"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:11;background:var(--color-bg);border-radius:32px 32px 0 0;padding:10px 18px 20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-lg)">
+<div style="width:40px;height:5px;border-radius:999px;background:var(--color-neutral-400);align-self:center"></div>
+<sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ logStepPad }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;justify-content:space-between"><h4 style="margin:0">Log expense</h4><button onClick="{{ closeLog }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+<div style="display:flex;align-items:center;gap:10px;min-height:64px">
+<div style="flex:1;min-width:0;font-family:var(--font-heading);font-size:52px;line-height:1;color:{{ logAmtColor }};overflow:hidden;white-space:nowrap">₹{{ logAmtText }}</div>
+<sc-if value="{{ hasLast }}" hint-placeholder-val="{{ true }}"><button onClick="{{ useLast }}" style="flex:none;font:600 13px var(--font-body);padding:9px 14px;border-radius:999px;border:1.5px dashed var(--color-accent);background:var(--color-accent-100);color:var(--color-accent-800);cursor:pointer" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)">{{ lastText }}</button></sc-if>
+</div>
+<sc-if value="{{ hasLogErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;font-weight:600;color:oklch(0.44 0.17 20);margin-top:-8px">{{ logErr }}</div></sc-if>
+<div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:2px 18px">
+<sc-for list="{{ logCats }}" as="c" hint-placeholder-count="5">
+<button onClick="{{ c.onClick }}" style="flex:none;display:flex;align-items:center;gap:6px;height:44px;padding:0 14px 0 10px;border-radius:999px;border:1.5px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font:600 14px var(--font-body);cursor:pointer" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.96)"><span style="font-size:20px">{{ c.emoji }}</span>{{ c.name }}<sc-if value="{{ c.usual }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:700;opacity:.8">· usual</span></sc-if></button>
+</sc-for>
+</div>
+<sc-if value="{{ logHasSubs }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span style="font-size:12px;color:var(--color-neutral-700);font-weight:600">Sub</span>
+<sc-for list="{{ logSubs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="height:34px;padding:0 13px;border-radius:999px;border:1.5px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};font:600 13px var(--font-body);cursor:pointer" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.96)">{{ s.n }}</button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ logHasQuick }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ logQuick }}" as="q" hint-placeholder-count="2"><button onClick="{{ q.onClick }}" style="height:36px;padding:0 13px;border-radius:999px;border:none;background:var(--color-accent-2-200);color:var(--color-accent-2-900);font:600 13px var(--font-body);cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:var(--color-accent-2-300)" style-active="background:var(--color-accent-2-400)"><span style="font-size:15px;line-height:1">⚡</span>{{ q.label }} {{ q.amtText }}</button></sc-for>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+<button onClick="{{ k.onClick }}" aria-label="{{ k.k }}" style="height:54px;border-radius:20px;border:none;background:var(--color-neutral-100);font:600 22px var(--font-body);color:var(--color-text);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--color-surface)" style-active="background:var(--color-accent-200);transform:scale(.96)">{{ k.label }}<sc-if value="{{ k.isDel }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path><path d="m12 9 6 6M18 9l-6 6"></path></svg></sc-if></button>
+</sc-for>
+</div>
+<button onClick="{{ toReview }}" disabled="{{ logInvalid }}" style="height:56px;border-radius:999px;border:none;background:{{ saveBg }};color:{{ saveFg }};font-family:var(--font-heading);font-size:18px;cursor:pointer" style-hover="filter:brightness(.94)" style-active="filter:brightness(.86)">Review · {{ logDest }}</button>
+</sc-if>
+<sc-if value="{{ logStepReview }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:8px"><button onClick="{{ backToPad }}" aria-label="Back" style="width:44px;height:44px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg></button><h4 style="margin:0">Check before saving</h4></div>
+<div style="background:var(--color-surface);border-radius:32px;padding:26px 22px;display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<div style="font-size:13px;font-weight:600;color:var(--color-neutral-700)">You’re saving</div>
+<div style="font-family:var(--font-heading);font-size:52px;line-height:1">{{ logReviewAmt }}</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;margin-top:4px"><span style="width:44px;height:44px;border-radius:50%;background:var(--color-neutral-100);display:grid;place-items:center;font-size:22px">{{ logCat.emoji }}</span>{{ logDest }}</div>
+<div style="font-size:13px;color:var(--color-neutral-700)">{{ logReviewDate }} · {{ logAfterText }}</div>
+</div>
+<div style="display:flex;gap:10px">
+<button onClick="{{ backToPad }}" style="flex:1;height:56px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:17px;color:var(--color-text);cursor:pointer" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)">Edit</button>
+<button onClick="{{ saveLog }}" style="flex:2;height:56px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Save</button>
+</div>
+</sc-if>
+</sc-if>
+<sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ logStepPick }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;justify-content:space-between"><h4 style="margin:0">What was it for?</h4><button onClick="{{ closeLog }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+<sc-for list="{{ logCats }}" as="c" hint-placeholder-count="9">
+<button onClick="{{ c.onClick }}" style="position:relative;aspect-ratio:1;border-radius:28px;border:2px solid {{ c.bd }};background:{{ c.tileBg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font:600 13px var(--font-body);color:var(--color-text);padding:6px" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.95)"><span style="font-size:36px;line-height:1">{{ c.emoji }}</span><span style="text-align:center;line-height:1.15">{{ c.name }}</span><sc-if value="{{ c.usual }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--color-accent);color:var(--color-neutral-100)">usual</span></sc-if></button>
+</sc-for>
+</div>
+<div style="font-size:12px;color:var(--color-neutral-700);text-align:center">Sorted by how often you use them</div>
+</sc-if>
+<sc-if value="{{ logStepPad }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:8px">
+<button onClick="{{ backToPick }}" aria-label="Change category" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 16px 0 8px;border-radius:999px;border:none;background:var(--color-accent-200);cursor:pointer;font:700 15px var(--font-body);color:var(--color-accent-900)" style-hover="background:var(--color-accent-300)" style-active="background:var(--color-accent-400)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"></path></svg><span style="font-size:20px">{{ logCat.emoji }}</span>{{ logCat.name }}</button>
+<span style="flex:1"></span>
+<button onClick="{{ closeLog }}" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--color-text)" style-hover="background:var(--color-surface)" style-active="background:var(--color-neutral-300)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+</div>
+<sc-if value="{{ logHasQuick }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+<sc-for list="{{ logQuick }}" as="q" hint-placeholder-count="2"><button onClick="{{ q.onClick }}" style="min-height:58px;padding:8px 14px;border-radius:22px;border:none;background:var(--color-accent-2-200);color:var(--color-accent-2-900);cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;font-family:var(--font-body)" style-hover="background:var(--color-accent-2-300)" style-active="background:var(--color-accent-2-400)"><span style="font-size:12px;font-weight:600">⚡ {{ q.label }}</span><span style="font-family:var(--font-heading);font-size:19px">{{ q.amtText }}</span></button></sc-for>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:10px;min-height:60px">
+<div style="flex:1;min-width:0;font-family:var(--font-heading);font-size:48px;line-height:1;color:{{ logAmtColor }};overflow:hidden;white-space:nowrap">₹{{ logAmtText }}</div>
+<sc-if value="{{ hasLast }}" hint-placeholder-val="{{ true }}"><button onClick="{{ useLast }}" style="flex:none;font:600 13px var(--font-body);padding:9px 14px;border-radius:999px;border:1.5px dashed var(--color-accent);background:var(--color-accent-100);color:var(--color-accent-800);cursor:pointer" style-hover="background:var(--color-accent-200)" style-active="background:var(--color-accent-300)">{{ lastText }}</button></sc-if>
+</div>
+<sc-if value="{{ hasLogErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;font-weight:600;color:oklch(0.44 0.17 20);margin-top:-8px">{{ logErr }}</div></sc-if>
+<sc-if value="{{ logHasSubs }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ logSubs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="height:36px;padding:0 14px;border-radius:999px;border:1.5px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};font:600 13px var(--font-body);cursor:pointer" style-hover="border-color:var(--color-accent)" style-active="transform:scale(.96)">{{ s.n }}</button></sc-for>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+<button onClick="{{ k.onClick }}" aria-label="{{ k.k }}" style="height:52px;border-radius:20px;border:none;background:var(--color-neutral-100);font:600 22px var(--font-body);color:var(--color-text);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--color-surface)" style-active="background:var(--color-accent-200);transform:scale(.96)">{{ k.label }}<sc-if value="{{ k.isDel }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path><path d="m12 9 6 6M18 9l-6 6"></path></svg></sc-if></button>
+</sc-for>
+</div>
+<button onClick="{{ saveLog }}" disabled="{{ logInvalid }}" style="min-height:58px;padding:8px 18px;border-radius:999px;border:none;background:{{ saveBg }};color:{{ saveFg }};font-family:var(--font-heading);font-size:17px;line-height:1.2;cursor:pointer" style-hover="filter:brightness(.94)" style-active="filter:brightness(.86)">{{ logSaveLabel }}</button>
+</sc-if>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position:absolute;left:14px;right:14px;bottom:96px;z-index:20;background:var(--color-neutral-900);color:var(--color-neutral-100);border-radius:24px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg)">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-2-300)" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M20 6 9 17l-5-5"></path></svg>
+<span style="flex:1;min-width:0;font-size:14px;font-weight:600;line-height:1.3">{{ toastText }}</span>
+<sc-if value="{{ toastUndo }}" hint-placeholder-val="{{ true }}"><button onClick="{{ undo }}" style="flex:none;height:40px;padding:0 16px;border-radius:999px;border:none;background:var(--color-accent-400);color:var(--color-neutral-900);font:700 14px var(--font-body);cursor:pointer" style-hover="background:var(--color-accent-300)" style-active="background:var(--color-accent-200)">Undo</button></sc-if>
+<button onClick="{{ closeToast }}" aria-label="Dismiss" style="flex:none;width:40px;height:40px;border-radius:50%;border:none;background:transparent;color:var(--color-neutral-300);display:grid;place-items:center;cursor:pointer" style-hover="background:var(--color-neutral-800)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+</div>
+</sc-if>
+<sc-if value="{{ hasDialog }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeDialog }}" style="position:absolute;inset:0;background:color-mix(in srgb,var(--color-neutral-900) 45%,transparent);z-index:30"></div>
+<div role="dialog" style="position:absolute;left:12px;right:12px;bottom:16px;z-index:31;background:var(--color-bg);border-radius:32px;padding:22px 20px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-lg)">
+<sc-if value="{{ dlgBudget }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">{{ d.emoji }} {{ d.name }} budget</h4>
+<input value="{{ draftA }}" onChange="{{ onDraftA }}" inputMode="decimal" aria-label="Monthly budget" style="height:56px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 20px;font:400 26px var(--font-heading);color:var(--color-text)">
+<div style="font-size:13px;color:var(--color-neutral-700)">Spent so far: {{ d.spentText }}</div>
+<div style="display:flex;gap:8px"><button onClick="{{ closeDialog }}" style="flex:1;height:50px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button><button onClick="{{ saveBudget }}" disabled="{{ draftAInvalid }}" style="flex:1;height:50px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:16px;cursor:pointer;opacity:{{ draftAOpacity }}" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Save</button></div>
+</sc-if>
+<sc-if value="{{ dlgRename }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">Edit category</h4>
+<div style="display:flex;gap:8px"><input value="{{ draftB }}" onChange="{{ onDraftB }}" aria-label="Emoji" maxLength="4" style="width:60px;height:52px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);text-align:center;font-size:24px"><input value="{{ draftA }}" onChange="{{ onDraftA }}" aria-label="Name" style="flex:1;min-width:0;height:52px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 16px;font:600 16px var(--font-body);color:var(--color-text)"></div>
+<div style="display:flex;gap:8px"><button onClick="{{ closeDialog }}" style="flex:1;height:50px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button><button onClick="{{ saveRename }}" style="flex:1;height:50px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Save</button></div>
+</sc-if>
+<sc-if value="{{ dlgSub }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">New subcategory in {{ d.emoji }} {{ d.name }}</h4>
+<input value="{{ subDraft }}" onChange="{{ onSubDraft }}" placeholder="e.g. Electricity" aria-label="Subcategory name" style="height:52px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 18px;font:600 16px var(--font-body);color:var(--color-text)">
+<div style="display:flex;gap:8px"><button onClick="{{ closeDialog }}" style="flex:1;height:50px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button><button onClick="{{ saveSubDlg }}" style="flex:1;height:50px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Add</button></div>
+</sc-if>
+<sc-if value="{{ dlgQuick }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">New quick amount</h4>
+<div style="display:flex;gap:8px"><input value="{{ draftA }}" onChange="{{ onDraftA }}" placeholder="Label, e.g. Water can" aria-label="Label" style="flex:1;min-width:0;height:52px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 16px;font:600 15px var(--font-body);color:var(--color-text)"><input value="{{ draftB }}" onChange="{{ onDraftB }}" placeholder="₹" inputMode="decimal" aria-label="Amount" style="width:100px;height:52px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 16px;font:600 15px var(--font-body);color:var(--color-text)"></div>
+<div style="display:flex;gap:8px"><button onClick="{{ closeDialog }}" style="flex:1;height:50px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button><button onClick="{{ saveQuick }}" style="flex:1;height:50px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Add</button></div>
+</sc-if>
+<sc-if value="{{ dlgEntry }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">Edit entry</h4>
+<input value="{{ draftA }}" onChange="{{ onDraftA }}" inputMode="decimal" aria-label="Amount" style="height:56px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);padding:0 20px;font:400 26px var(--font-heading);color:var(--color-text)">
+<sc-if value="{{ draftAInvalid }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;font-weight:600;color:oklch(0.44 0.17 20)">Enter more than ₹0, up to 2 decimals</div></sc-if>
+<sc-if value="{{ entryHasSubs }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ entrySubs }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.onClick }}" style="height:36px;padding:0 13px;border-radius:999px;border:1.5px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};font:600 13px var(--font-body);cursor:pointer" style-hover="border-color:var(--color-accent)">{{ s.label }}</button></sc-for></div></sc-if>
+<div style="display:flex;gap:8px"><button onClick="{{ deleteEntry }}" style="height:50px;padding:0 18px;border-radius:999px;border:none;background:oklch(0.93 0.045 18);color:oklch(0.44 0.17 20);font:700 14px var(--font-body);cursor:pointer" style-hover="background:oklch(0.88 0.07 18)">Delete</button><span style="flex:1"></span><button onClick="{{ saveEntry }}" style="height:50px;padding:0 26px;border-radius:999px;border:none;background:var(--color-accent);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-accent-600)" style-active="background:var(--color-accent-700)">Save</button></div>
+</sc-if>
+<sc-if value="{{ dlgMerge }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">Merge {{ d.emoji }} {{ d.name }} into…</h4>
+<div style="font-size:13px;color:var(--color-neutral-700);margin-top:-4px">Its {{ d.countText }}, subcategories and {{ d.budgetText }} budget move to the category you pick. {{ d.name }} is then removed.</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;max-height:300px;overflow-y:auto">
+<sc-for list="{{ mergeTargets }}" as="t" hint-placeholder-count="6"><button onClick="{{ t.onClick }}" style="display:flex;align-items:center;gap:8px;height:50px;padding:0 12px;border-radius:999px;border:1.5px solid var(--color-divider);background:var(--color-neutral-100);font:600 14px var(--font-body);color:var(--color-text);cursor:pointer;text-align:left" style-hover="border-color:var(--color-accent);background:var(--color-accent-100)" style-active="background:var(--color-accent-200)"><span style="font-size:20px">{{ t.emoji }}</span>{{ t.name }}</button></sc-for>
+</div>
+<button onClick="{{ closeDialog }}" style="height:48px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:16px;cursor:pointer" style-hover="background:var(--color-surface)">Cancel</button>
+</sc-if>
+<sc-if value="{{ dlgDelete }}" hint-placeholder-val="{{ false }}">
+<h4 style="margin:0">Delete {{ d.emoji }} {{ d.name }}?</h4>
+<div style="font-size:14px;color:var(--color-neutral-800)">Its {{ d.countText }} this month ({{ d.spentText }}) will be deleted too. To keep them, merge instead.</div>
+<div style="display:flex;gap:8px"><button onClick="{{ openMerge }}" style="flex:1;height:50px;border-radius:999px;border:1.5px solid var(--color-divider);background:transparent;font-family:var(--font-heading);font-size:15px;cursor:pointer" style-hover="background:var(--color-surface)">Merge instead</button><button onClick="{{ doDelete }}" style="flex:1;height:50px;border-radius:999px;border:none;background:oklch(0.5 0.18 18);color:var(--color-neutral-100);font-family:var(--font-heading);font-size:15px;cursor:pointer" style-hover="background:oklch(0.44 0.17 18)" style-active="background:oklch(0.38 0.15 18)">Delete</button></div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;logVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;],&quot;default&quot;:&quot;A&quot;,&quot;tsType&quot;:&quot;'A'|'B'&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;welcome&quot;,&quot;setup-cats&quot;,&quot;setup-budgets&quot;,&quot;overview&quot;,&quot;log&quot;,&quot;insights&quot;,&quot;detail&quot;,&quot;settings&quot;],&quot;default&quot;:&quot;overview&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;wants-out&quot;],&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;bare&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const DAYS_LEFT = 8, TODAY = 23;
+const MONTHS = ['Sep 2026', 'Aug 2026', 'Jul 2026'];
+const MSHORT = ['Sep', 'Aug', 'Jul'];
+const COL = {
+  normal: { bar: 'var(--color-accent-2)', bg: 'var(--color-accent-2-100)', fg: 'var(--color-accent-2-800)' },
+  amber: { bar: 'oklch(0.79 0.15 78)', bg: 'oklch(0.95 0.06 88)', fg: 'oklch(0.44 0.09 65)' },
+  red: { bar: 'oklch(0.5 0.18 18)', bg: 'oklch(0.93 0.045 18)', fg: 'oklch(0.44 0.17 20)' }
+};
+const SLICE = ['var(--color-accent)', 'var(--color-accent-2)', 'var(--color-accent-400)', 'var(--color-accent-2-400)', 'var(--color-accent-700)', 'var(--color-accent-2-700)', 'var(--color-neutral-500)', 'var(--color-accent-300)', 'var(--color-accent-2-300)', 'var(--color-neutral-700)', 'var(--color-accent-800)', 'var(--color-accent-2-800)'];
+const CATS0 = [
+  { id: 'housing', emoji: '🏠', name: 'Housing', budget: 25000, want: false, subs: ['Rent', 'Electricity', 'Water'], quick: [{ id: 'q1', label: 'Rent', amt: 19333, sub: 'Rent', rec: true }, { id: 'q2', label: 'Water can', amt: 120, sub: 'Water' }] },
+  { id: 'groceries', emoji: '🛒', name: 'Groceries', budget: 8000, want: false, subs: [], quick: [{ id: 'q3', label: 'Milk', amt: 68 }] },
+  { id: 'food', emoji: '🍜', name: 'Eating out', budget: 4000, want: true, subs: ['Swiggy', 'Cafés'], quick: [{ id: 'q4', label: 'Chai', amt: 30, sub: 'Cafés' }] },
+  { id: 'transport', emoji: '🛺', name: 'Transport', budget: 3000, want: false, subs: ['Auto', 'Metro'], quick: [{ id: 'q5', label: 'Metro', amt: 40, sub: 'Metro' }] },
+  { id: 'shopping', emoji: '🛍️', name: 'Shopping', budget: 3000, want: true, subs: [], quick: [] },
+  { id: 'fun', emoji: '🎬', name: 'Entertainment', budget: 2000, want: true, subs: ['Movies', 'Subscriptions'], quick: [{ id: 'q6', label: 'Netflix', amt: 199, sub: 'Subscriptions', rec: true }] },
+  { id: 'health', emoji: '💊', name: 'Health', budget: 2000, want: false, subs: [], quick: [] },
+  { id: 'bills', emoji: '📶', name: 'Bills', budget: 1500, want: false, subs: ['Internet', 'Mobile'], quick: [{ id: 'q7', label: 'Internet', amt: 799, sub: 'Internet', rec: true }, { id: 'q8', label: 'Mobile', amt: 299, sub: 'Mobile', rec: true }] }
+];
+const EXTRA = [{ id: 'edu', emoji: '📚', name: 'Education' }, { id: 'travel', emoji: '✈️', name: 'Travel' }, { id: 'gifts', emoji: '🎁', name: 'Gifts' }, { id: 'pets', emoji: '🐾', name: 'Pets' }];
+
+function fmt(n) {
+  const neg = n < 0; n = Math.abs(Math.round(n * 100) / 100);
+  let [i, d] = n.toFixed(2).split('.');
+  const last3 = i.slice(-3); let rest = i.slice(0, -3);
+  if (rest) rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+  let s = (rest ? rest + ',' : '') + last3;
+  if (d !== '00') s += '.' + d;
+  return (neg ? '−' : '') + '₹' + s;
+}
+function fmtTyping(s) {
+  if (!s) return '0';
+  const [i, d] = s.split('.');
+  const g = fmt(Number(i || 0)).slice(1);
+  return s.includes('.') ? g + '.' + (d || '') : g;
+}
+const validAmt = s => /^\d+(\.\d{1,2})?$/.test(String(s).trim()) && Number(s) > 0;
+
+function seed(sc) {
+  const E = []; let n = 0;
+  const a = (c, amt, d, s, m) => E.push({ id: 'e' + (n++), cat: c, sub: s || null, amt, d, m: m || 0 });
+  a('housing', 19333, 1, 'Rent'); a('housing', 1840, 5, 'Electricity');
+  [3, 10, 17, 22].forEach(d => a('housing', 120, d, 'Water'));
+  [[1450, 2], [620, 6], [2100, 9], [880, 14], [1320, 19], [540, 22]].forEach(([v, d]) => a('groceries', v, d));
+  [[450, 4, 'Swiggy'], [780, 7, 'Swiggy'], [320, 12, 'Cafés'], [1100, 15, 'Swiggy'], [640, 18, 'Cafés'], [900, 20, 'Swiggy'], [560, 21, 'Swiggy']].forEach(([v, d, s]) => a('food', v, d, s));
+  [[240, 2, 'Auto'], [180, 8, 'Metro'], [320, 11, 'Auto'], [150, 16, 'Metro'], [410, 21, 'Auto']].forEach(([v, d, s]) => a('transport', v, d, s));
+  a('shopping', sc === 'wants-out' ? 3600 : 1299, 13);
+  a('fun', 199, 6, 'Subscriptions'); a('fun', 650, 19, 'Movies');
+  a('bills', 799, 1, 'Internet'); a('bills', 299, 1, 'Mobile');
+  const H = { housing: [22100, 21900], groceries: [7200, 6800], food: [3600, 3100], transport: [2100, 2400], shopping: [4200, 1800], fun: [1500, 900], health: [650, 1200], bills: [1098, 1098] };
+  Object.keys(H).forEach(c => { a(c, H[c][0], 15, null, 1); a(c, H[c][1], 15, null, 2); });
+  return E;
+}
+const I = (d, s) => ({ d, s });
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const p = props || {};
+    const start = p.startScreen || 'overview';
+    const isLog = start === 'log';
+    this.scRef = React.createRef();
+    this.state = {
+      screen: isLog ? 'overview' : start,
+      cats: JSON.parse(JSON.stringify(CATS0)),
+      entries: seed(p.scenario),
+      thrX: 70, thrY: 90,
+      detailId: p.detailId || 'groceries',
+      insM: Number(p.insMonth || 0),
+      log: { open: isLog, step: p.logStep || (this.variantOf(p) === 'B' ? 'pick' : 'pad'), amt: p.logAmt || '', cat: p.logCat || null, sub: p.logSub || null },
+      lastAmt: 540, toast: p.toastDemo ? { text: '₹120 filed in 🏠 Housing › Water', undo: () => {} } : null,
+      dialog: p.dialog || null, editEntry: null, draftA: '', draftB: '',
+      customName: '', customEmoji: '', subFor: null, subDraft: '', recFor: null, variant: null
+    };
+  }
+  variantOf(p) { return (this.state && this.state.variant) || (p || this.props).logVariant || 'A'; }
+  isBare() { const b = this.props.bare; return b === true || b === 'true'; }
+
+  go(screen, extra) {
+    this.setState({ screen, dialog: null, subFor: null, recFor: null, ...(extra || {}) });
+    if (this.scRef.current) this.scRef.current.scrollTop = 0;
+  }
+  catsById() { const m = {}; this.state.cats.forEach(c => m[c.id] = c); return m; }
+  spent(id, m = 0) { return this.state.entries.reduce((s, e) => e.cat === id && e.m === m ? s + e.amt : s, 0); }
+  mostFreq() {
+    const cnt = {}; this.state.entries.forEach(e => { if (e.m === 0) cnt[e.cat] = (cnt[e.cat] || 0) + 1; });
+    const ids = this.state.cats.map(c => c.id);
+    return ids.sort((a, b) => (cnt[b] || 0) - (cnt[a] || 0))[0];
+  }
+  stateOf(pct) { const { thrX, thrY } = this.state; return pct > 100 ? 'over' : pct >= thrY ? 'red' : pct >= thrX ? 'amber' : 'normal'; }
+  catView(c) {
+    const spent = this.spent(c.id), pct = c.budget ? spent / c.budget * 100 : (spent ? 101 : 0);
+    const st = this.stateOf(pct), col = st === 'over' ? COL.red : COL[st];
+    const count = this.state.entries.filter(e => e.cat === c.id && e.m === 0).length;
+    return {
+      ...c, spent, spentText: fmt(spent), budgetText: fmt(c.budget), pct: Math.round(pct), pctText: Math.round(pct) + '%',
+      st, bar: col.bar, tagBg: col.bg, tagFg: col.fg, barW: Math.min(pct, 100) + '%',
+      tagText: st === 'over' ? fmt(spent - c.budget) + ' over' : st === 'normal' ? 'On track' : Math.round(pct) + '% used',
+      leftText: st === 'over' ? fmt(spent - c.budget) + ' over budget' : fmt(c.budget - spent) + ' left',
+      subsText: c.subs.join(' · '), hasSubs: c.subs.length > 0, count, countText: count + (count === 1 ? ' entry' : ' entries'),
+      isOver: st === 'over', wantTag: c.want,
+      onClick: () => this.go('detail', { detailId: c.id })
+    };
+  }
+  toast(text, undo) {
+    clearTimeout(this.tt);
+    this.setState({ toast: { text, undo } });
+    this.tt = setTimeout(() => this.setState({ toast: null }), 5000);
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+
+  // logging
+  openLog(catId) {
+    const v = this.variantOf();
+    this.setState({ log: { open: true, step: v === 'B' && !catId ? 'pick' : 'pad', amt: '', cat: catId || this.mostFreq(), sub: null } });
+  }
+  setLog(p) { this.setState(s => ({ log: { ...s.log, ...p } })); }
+  key(k) {
+    let a = this.state.log.amt;
+    if (k === 'del') a = a.slice(0, -1);
+    else if (k === '.') { if (!a.includes('.')) a = (a || '0') + '.'; }
+    else {
+      if (a.includes('.') && a.split('.')[1].length >= 2) { this.setLog({ shake: Date.now() }); return; }
+      if (a.replace('.', '').length >= 8) return;
+      a = a === '0' ? k : a + k;
+    }
+    this.setLog({ amt: a });
+  }
+  saveLog() {
+    const { log, cats } = this.state; if (!validAmt(log.amt)) return;
+    const c = cats.find(x => x.id === log.cat); const amt = Number(log.amt);
+    const id = 'n' + Date.now();
+    this.setState(s => ({ entries: [...s.entries, { id, cat: log.cat, sub: log.sub, amt, d: TODAY, m: 0 }], lastAmt: amt, log: { ...s.log, open: false } }));
+    this.toast(fmt(amt) + ' filed in ' + c.emoji + ' ' + c.name + (log.sub ? ' › ' + log.sub : ''), () => this.setState(s => ({ entries: s.entries.filter(e => e.id !== id), toast: null })));
+  }
+
+  // category ops
+  updCat(id, fn) { this.setState(s => ({ cats: s.cats.map(c => c.id === id ? fn({ ...c }) : c) })); }
+  addSub(id) {
+    const n = (this.state.subDraft || '').trim(); if (!n) return;
+    this.updCat(id, c => ({ ...c, subs: c.subs.includes(n) ? c.subs : [...c.subs, n] }));
+    this.setState({ subFor: null, subDraft: '' });
+  }
+  merge(target) {
+    const { detailId, cats } = this.state; const src = cats.find(c => c.id === detailId), t = cats.find(c => c.id === target);
+    this.setState(s => ({
+      entries: s.entries.map(e => e.cat === detailId ? { ...e, cat: target } : e),
+      cats: s.cats.filter(c => c.id !== detailId).map(c => c.id === target ? { ...c, budget: c.budget + src.budget, subs: [...new Set([...c.subs, ...src.subs])], quick: [...c.quick, ...src.quick] } : c)
+    }));
+    this.go('detail', { detailId: target });
+    this.toast('Merged ' + src.emoji + ' ' + src.name + ' into ' + t.emoji + ' ' + t.name);
+  }
+  togglePreset(p) {
+    const on = this.state.cats.some(c => c.id === p.id);
+    if (on) this.setState(s => ({ cats: s.cats.filter(c => c.id !== p.id) }));
+    else {
+      const base = CATS0.find(c => c.id === p.id) || { ...p, budget: 1000, want: false, subs: [], quick: [] };
+      this.setState(s => ({ cats: [...s.cats, JSON.parse(JSON.stringify(base))] }));
+    }
+  }
+  addCustom() {
+    const name = this.state.customName.trim(); if (!name) return;
+    const c = { id: 'c' + Date.now(), emoji: this.state.customEmoji.trim() || '🏷️', name, budget: 1000, want: false, subs: [], quick: [] };
+    this.setState(s => ({ cats: [...s.cats, c], customName: '', customEmoji: '' }));
+  }
+  exportCsv() {
+    const cb = this.catsById();
+    const rows = [['date', 'category', 'subcategory', 'amount']].concat(this.state.entries.map(e => [`2026-${String(9 - e.m).padStart(2, '0')}-${String(e.d).padStart(2, '0')}`, (cb[e.cat] || {}).name || '', e.sub || '', e.amt]));
+    try {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(',')).join('\n')], { type: 'text/csv' }));
+      a.download = 'khata-2026-09.csv'; a.click();
+    } catch (e) {}
+    this.toast('Exported khata-2026-09.csv to Downloads');
+  }
+
+  renderVals() {
+    const s = this.state, bare = this.isBare(), v = this.variantOf();
+    const cb = this.catsById();
+    const views = s.cats.map(c => this.catView(c));
+    const spentTotal = views.reduce((a, c) => a + c.spent, 0), budgetTotal = s.cats.reduce((a, c) => a + c.budget, 0);
+    const wants = views.filter(c => c.want);
+    const wB = wants.reduce((a, c) => a + c.budget, 0), wS = wants.reduce((a, c) => a + c.spent, 0), wL = wB - wS;
+    const sel = (on) => ({ bg: on ? 'var(--color-accent)' : 'var(--color-neutral-100)', fg: on ? 'var(--color-neutral-100)' : 'var(--color-text)', bd: on ? 'var(--color-accent)' : 'var(--color-divider)' });
+    const scr = s.screen;
+    const rail = [['welcome', 'Setup · Welcome'], ['setup-cats', 'Setup · Categories'], ['setup-budgets', 'Setup · Budgets'], ['overview', 'Overview'], ['log', 'Log an expense'], ['insights', 'Insights'], ['detail', 'Category detail'], ['settings', 'Settings']];
+
+    // log
+    const L = s.log, lc = cb[L.cat] || s.cats[0] || { subs: [], quick: [] };
+    const lValid = validAmt(L.amt);
+    const lErr = L.amt && !lValid ? (Number(L.amt) <= 0 ? 'Amount must be more than ₹0' : 'Up to 2 decimals') : '';
+    const counts = {}; s.entries.forEach(e => { if (e.m === 0) counts[e.cat] = (counts[e.cat] || 0) + 1; });
+    const usual = this.mostFreq();
+    const logCats = [...s.cats].sort((a, b) => (counts[b.id] || 0) - (counts[a.id] || 0)).map(c => ({
+      ...c, ...sel(c.id === L.cat), usual: c.id === usual,
+      tileBg: c.id === L.cat ? 'var(--color-accent-200)' : 'var(--color-neutral-100)',
+      onClick: () => this.setLog({ cat: c.id, sub: null, step: v === 'B' && L.step === 'pick' ? 'pad' : L.step })
+    }));
+    const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del'].map(k => ({ k, isDel: k === 'del', label: k === 'del' ? '' : k, onClick: () => this.key(k) }));
+    const logDest = lc.emoji + ' ' + lc.name + (L.sub ? ' › ' + L.sub : '');
+
+    // detail
+    const dc = cb[s.detailId] || s.cats[0];
+    const dv = dc ? this.catView(dc) : null;
+    const dEntries = dc ? s.entries.filter(e => e.cat === dc.id && e.m === 0).sort((a, b) => b.d - a.d) : [];
+    const subsView = dc ? dc.subs.map(n => { const sp = dEntries.filter(e => e.sub === n).reduce((a, e) => a + e.amt, 0); const sh = dv.spent ? sp / dv.spent * 100 : 0; return { name: n, spentText: fmt(sp), share: Math.round(sh) + '%', w: sh + '%' }; }) : [];
+    const unfiled = dv ? dEntries.filter(e => !e.sub).reduce((a, e) => a + e.amt, 0) : 0;
+
+    // insights
+    const m = s.insM;
+    const ranked = s.cats.map(c => ({ c, sp: this.spent(c.id, m), prev: m < 2 ? this.spent(c.id, m + 1) : null })).filter(x => x.sp > 0 || (x.prev || 0) > 0).sort((a, b) => b.sp - a.sp);
+    const insTotal = ranked.reduce((a, x) => a + x.sp, 0);
+    let acc = 0; const stops = [];
+    ranked.forEach((x, i) => { const f = insTotal ? x.sp / insTotal * 100 : 0; stops.push(`${SLICE[i % SLICE.length]} ${acc}% ${acc + f}%`); acc += f; });
+    const top = ranked[0];
+    const prevTotal = m < 2 ? s.cats.reduce((a, c) => a + this.spent(c.id, m + 1), 0) : 0;
+
+    // settings counts
+    const stc = { normal: 0, amber: 0, red: 0 };
+    views.forEach(c => { stc[c.st === 'over' ? 'red' : c.st]++; });
+
+    const setX = e => { const x = Math.min(Number(e.target.value), s.thrY - 5); this.setState({ thrX: x }); };
+    const setY = e => { const y = Math.max(Number(e.target.value), s.thrX + 5); this.setState({ thrY: y }); };
+    const inp = k => e => this.setState({ [k]: e.target.value });
+
+    return {
+      pageMinH: bare ? '0' : '100vh', pagePad: bare ? '0' : '32px 20px', pageBg: bare ? 'transparent' : 'var(--color-neutral-200)', showRail: !bare,
+      railItems: rail.map(([id, label]) => { const on = id === 'log' ? L.open : (!L.open && scr === id); return { label, ...sel(on), onClick: () => id === 'log' ? (this.go('overview'), this.openLog()) : (this.setState({ log: { ...L, open: false } }), this.go(id)) }; }),
+      variantItems: [['A', 'A · Keypad first'], ['B', 'B · Category first']].map(([id, label]) => ({ label, ...sel(v === id), onClick: () => this.setState({ variant: id, log: { ...L, step: id === 'B' ? 'pick' : 'pad' } }) })),
+      variantNote: v === 'A' ? 'Amount first on a keypad; category chips preselect your usual. A review step confirms before saving.' : 'Tap a big emoji tile first, then the amount with that category\u2019s quick amounts on top. The save button itself states what gets filed.',
+      scRef: this.scRef,
+      isWelcome: scr === 'welcome', isSetupCats: scr === 'setup-cats', isSetupBudgets: scr === 'setup-budgets',
+      isOverview: scr === 'overview', isInsights: scr === 'insights', isDetail: scr === 'detail' && !!dv, isSettings: scr === 'settings',
+      goOverview: () => this.go('overview'), goInsights: () => this.go('insights'), goSettings: () => this.go('settings'),
+      goWelcome: () => this.go('welcome'), goSetupCats: () => this.go('setup-cats'), goSetupBudgets: () => this.go('setup-budgets'),
+      openLog: () => this.openLog(),
+
+      // setup
+      presets: [...CATS0, ...EXTRA].concat(s.cats.filter(c => c.id[0] === 'c')).map(p => { const on = s.cats.some(c => c.id === p.id); return { ...p, on, ...sel(on), tileBg: on ? 'var(--color-accent-100)' : 'var(--color-neutral-100)', tileBd: on ? 'var(--color-accent)' : 'transparent', onClick: () => this.togglePreset(p) }; }),
+      selCount: s.cats.length + ' selected',
+      customName: s.customName, customEmoji: s.customEmoji, onCustomName: inp('customName'), onCustomEmoji: inp('customEmoji'), addCustom: () => this.addCustom(),
+      setupCats: s.cats.map(c => ({
+        ...c, subItems: c.subs.map(n => ({ n, onRemove: () => this.updCat(c.id, x => ({ ...x, subs: x.subs.filter(y => y !== n) })) })),
+        adding: s.subFor === c.id, startSub: () => this.setState({ subFor: c.id, subDraft: '' }), saveSub: () => this.addSub(c.id),
+        budgetVal: String(c.budget), onBudget: e => { const val = e.target.value.replace(/[^\d]/g, ''); this.updCat(c.id, x => ({ ...x, budget: Number(val || 0) })); },
+        recs: c.quick.map(q => ({ ...q, amtText: fmt(q.amt), recOn: !!q.rec, recBg: q.rec ? 'var(--color-accent-2-200)' : 'var(--color-neutral-100)', recFg: q.rec ? 'var(--color-accent-2-800)' : 'var(--color-neutral-700)', recLabel: q.rec ? 'Every month' : 'Tap to make recurring', toggle: () => this.updCat(c.id, x => ({ ...x, quick: x.quick.map(y => y.id === q.id ? { ...y, rec: !y.rec } : y) })) })),
+        addingRec: s.recFor === c.id, startRec: () => this.setState({ recFor: c.id, draftA: '', draftB: '' }),
+        saveRec: () => { if (!s.draftA.trim() || !validAmt(s.draftB)) return; this.updCat(c.id, x => ({ ...x, quick: [...x.quick, { id: 'q' + Date.now(), label: s.draftA.trim(), amt: Number(s.draftB), rec: true }] })); this.setState({ recFor: null }); }
+      })),
+      subDraft: s.subDraft, onSubDraft: inp('subDraft'), cancelSub: () => this.setState({ subFor: null }),
+      draftA: s.draftA, draftB: s.draftB, onDraftA: inp('draftA'), onDraftB: inp('draftB'), cancelRec: () => this.setState({ recFor: null }),
+      setupBudgetTotal: fmt(budgetTotal),
+
+      // overview
+      dateText: 'Wednesday, 23 September', daysLeftText: DAYS_LEFT + ' days left in September',
+      spentTotal: fmt(spentTotal), budgetTotal: fmt(budgetTotal),
+      leftTotal: spentTotal <= budgetTotal ? fmt(budgetTotal - spentTotal) + ' left' : fmt(spentTotal - budgetTotal) + ' over',
+      totalBarW: Math.min(100, spentTotal / (budgetTotal || 1) * 100) + '%', totalPct: Math.round(spentTotal / (budgetTotal || 1) * 100) + '% of budget used',
+      monthPaceW: ((30 - DAYS_LEFT + 1) / 30 * 100) + '%',
+      wantsOk: wL > 0, wantsOut: wL <= 0,
+      wantsPerDay: fmt(Math.floor(wL / DAYS_LEFT)), wantsLeftText: fmt(Math.max(wL, 0)) + ' of ' + fmt(wB) + ' Wants budget left',
+      wantsOverText: wL < 0 ? fmt(-wL) + ' over the ' + fmt(wB) + ' Wants budget' : 'The ' + fmt(wB) + ' Wants budget is used up',
+      wantsDaysText: DAYS_LEFT + ' days to go — stick to Needs until 1 October',
+      wantsNames: wants.map(c => c.emoji).join(' '),
+      catViews: views, catCount: views.length + ' categories',
+
+      // log sheet
+      logOpen: L.open, closeLog: () => this.setLog({ open: false }),
+      isA: v === 'A', isB: v === 'B', logStepPad: L.step === 'pad', logStepReview: L.step === 'review', logStepPick: L.step === 'pick',
+      logAmtText: fmtTyping(L.amt), logAmtColor: L.amt ? 'var(--color-text)' : 'var(--color-neutral-500)',
+      logValid: lValid, logInvalid: !lValid, logErr: lErr, hasLogErr: !!lErr, logHint: !L.amt ? 'Enter an amount' : '',
+      hasLast: !L.amt && s.lastAmt > 0, lastText: 'Last · ' + fmt(s.lastAmt), useLast: () => this.setLog({ amt: String(s.lastAmt) }),
+      keys, logCats, logCat: lc, logDest, logSubs: lc.subs.map(n => ({ n, ...sel(L.sub === n), onClick: () => this.setLog({ sub: L.sub === n ? null : n }) })), logHasSubs: lc.subs.length > 0,
+      logQuick: lc.quick.map(q => ({ ...q, amtText: fmt(q.amt), onClick: () => this.setLog({ amt: String(q.amt), sub: q.sub || L.sub }) })), logHasQuick: lc.quick.length > 0,
+      toReview: () => lValid && this.setLog({ step: 'review' }), backToPad: () => this.setLog({ step: 'pad' }), backToPick: () => this.setLog({ step: 'pick' }),
+      saveLog: () => this.saveLog(), logSaveLabel: lValid ? 'Save ' + fmt(Number(L.amt)) + ' · ' + logDest : 'Enter an amount to save',
+      logReviewAmt: lValid ? fmt(Number(L.amt)) : '', logReviewDate: 'Today, 23 Sep',
+      logAfterText: (() => { const cv = views.find(c => c.id === lc.id); if (!cv || !lValid) return ''; const after = cv.spent + Number(L.amt); return 'After this: ' + fmt(after) + ' of ' + fmt(lc.budget) + (after > lc.budget ? ' — ' + fmt(after - lc.budget) + ' over' : ''); })(),
+      saveBg: lValid ? 'var(--color-accent)' : 'var(--color-neutral-300)', saveFg: lValid ? 'var(--color-neutral-100)' : 'var(--color-neutral-700)',
+
+      // toast
+      hasToast: !!s.toast, toastText: s.toast ? s.toast.text : '', toastUndo: !!(s.toast && s.toast.undo), undo: () => s.toast && s.toast.undo && s.toast.undo(), closeToast: () => this.setState({ toast: null }),
+
+      // detail
+      d: dv || {}, dSubs: subsView, dHasSubs: subsView.length > 0, dUnfiled: unfiled > 0, dUnfiledText: fmt(unfiled),
+      dQuick: dc ? dc.quick.map(q => ({ ...q, amtText: fmt(q.amt), onRemove: () => this.updCat(dc.id, x => ({ ...x, quick: x.quick.filter(y => y.id !== q.id) })) })) : [],
+      dHasQuick: dc ? dc.quick.length > 0 : false, dNoQuick: dc ? dc.quick.length === 0 : true, dNoSubs: subsView.length === 0,
+      dEntries: dEntries.map(e => ({ ...e, dateText: e.d + ' Sep', label: e.sub || dc.name, amtText: fmt(e.amt), onEdit: () => this.setState({ dialog: 'entry', editEntry: e.id, draftA: String(e.amt), draftB: e.sub || '' }) })),
+      dHasEntries: dEntries.length > 0, dNoEntries: dEntries.length === 0,
+      dLogHere: () => dc && this.openLog(dc.id),
+      mergeTargets: dc ? s.cats.filter(c => c.id !== dc.id).map(c => ({ ...c, onClick: () => this.merge(c.id) })) : [],
+      canDelete: s.cats.length > 1,
+
+      // dialogs
+      dlgBudget: s.dialog === 'budget', dlgRename: s.dialog === 'rename', dlgMerge: s.dialog === 'merge', dlgDelete: s.dialog === 'delete', dlgEntry: s.dialog === 'entry', dlgQuick: s.dialog === 'quick', dlgSub: s.dialog === 'sub',
+      hasDialog: !!s.dialog, closeDialog: () => this.setState({ dialog: null }),
+      openBudget: () => this.setState({ dialog: 'budget', draftA: String(dc.budget) }),
+      openRename: () => this.setState({ dialog: 'rename', draftA: dc.name, draftB: dc.emoji }),
+      openMerge: () => this.setState({ dialog: 'merge' }), openDelete: () => this.setState({ dialog: 'delete' }),
+      openQuick: () => this.setState({ dialog: 'quick', draftA: '', draftB: '' }), openSub: () => this.setState({ dialog: 'sub', subDraft: '' }),
+      draftAValid: validAmt(s.draftA), draftAInvalid: !validAmt(s.draftA), draftAOpacity: validAmt(s.draftA) ? 1 : 0.45, draftBValid: validAmt(s.draftB) && !!s.draftA.trim(), subDraftValid: !!s.subDraft.trim(), renameValid: !!s.draftA.trim(),
+      saveBudget: () => { if (!validAmt(s.draftA)) return; this.updCat(dc.id, x => ({ ...x, budget: Number(s.draftA) })); this.setState({ dialog: null }); this.toast('Budget for ' + dc.emoji + ' ' + dc.name + ' set to ' + fmt(Number(s.draftA))); },
+      saveRename: () => { if (!s.draftA.trim()) return; this.updCat(dc.id, x => ({ ...x, name: s.draftA.trim(), emoji: s.draftB.trim() || x.emoji })); this.setState({ dialog: null }); },
+      saveQuick: () => { if (!s.draftA.trim() || !validAmt(s.draftB)) return; this.updCat(dc.id, x => ({ ...x, quick: [...x.quick, { id: 'q' + Date.now(), label: s.draftA.trim(), amt: Number(s.draftB) }] })); this.setState({ dialog: null }); },
+      saveSubDlg: () => { this.addSub(dc.id); this.setState({ dialog: null }); },
+      doDelete: () => { const n = dc.emoji + ' ' + dc.name; this.setState(st => ({ cats: st.cats.filter(c => c.id !== dc.id), entries: st.entries.filter(e => e.cat !== dc.id) })); this.go('overview'); this.toast('Deleted ' + n); },
+      saveEntry: () => { if (!validAmt(s.draftA)) return; this.setState(st => ({ entries: st.entries.map(e => e.id === st.editEntry ? { ...e, amt: Number(st.draftA), sub: st.draftB || null } : e), dialog: null })); },
+      deleteEntry: () => { const e = s.entries.find(x => x.id === s.editEntry); this.setState(st => ({ entries: st.entries.filter(x => x.id !== st.editEntry), dialog: null })); this.toast('Deleted ' + fmt(e.amt) + ' from ' + dc.emoji + ' ' + dc.name, () => this.setState(st => ({ entries: [...st.entries, e], toast: null }))); },
+      entrySubs: dc ? [{ n: '', label: 'None' }].concat(dc.subs.map(n => ({ n, label: n }))).map(o => ({ ...o, ...sel(s.draftB === o.n), onClick: () => this.setState({ draftB: o.n }) })) : [],
+      entryHasSubs: dc ? dc.subs.length > 0 : false,
+
+      // insights
+      monthTabs: MONTHS.map((l, i) => ({ label: MSHORT[i], ...sel(i === m), onClick: () => this.setState({ insM: i }) })).reverse(),
+      insMonth: MONTHS[m], insTotal: fmt(insTotal), donutBg: stops.length ? `conic-gradient(${stops.join(',')})` : 'var(--color-neutral-300)',
+      insTop: top ? { emoji: top.c.emoji, name: top.c.name, pct: Math.round(top.sp / (insTotal || 1) * 100) + '%', amt: fmt(top.sp) } : {},
+      insRanked: ranked.filter(x => x.sp > 0).map((x, i) => ({ emoji: x.c.emoji, name: x.c.name, rank: i + 1, pct: Math.round(x.sp / (insTotal || 1) * 100) + '%', w: (x.sp / (ranked[0].sp || 1) * 100) + '%', amt: fmt(x.sp), dot: SLICE[i % SLICE.length] })),
+      insFirst: m === 2, insHasPrev: m < 2, insPrevLabel: m < 2 ? MSHORT[m + 1] : '',
+      insTotalDiff: m < 2 ? (insTotal >= prevTotal ? '▲ ' + fmt(insTotal - prevTotal) + ' more than ' + MSHORT[m + 1] : '▼ ' + fmt(prevTotal - insTotal) + ' less than ' + MSHORT[m + 1]) : 'First month tracked',
+      insTotalDiffFg: m < 2 ? (insTotal > prevTotal ? COL.red.fg : COL.normal.fg) : 'var(--color-neutral-700)',
+      insCompare: m < 2 ? ranked.map(x => { const diff = x.sp - x.prev; const up = diff > 0; return { emoji: x.c.emoji, name: x.c.name, now: fmt(x.sp), prev: fmt(x.prev), diffText: diff === 0 ? 'Same' : (up ? '▲ ' : '▼ ') + fmt(Math.abs(diff)), verdict: diff === 0 ? 'no change' : up ? 'spent more' : 'spent less', fg: diff === 0 ? 'var(--color-neutral-700)' : up ? COL.red.fg : COL.normal.fg, bg: diff === 0 ? 'var(--color-neutral-100)' : up ? COL.red.bg : COL.normal.bg }; }).sort((a, b) => 0) : [],
+      insIsPartial: m === 0,
+
+      // settings
+      thrX: s.thrX, thrY: s.thrY, onThrX: setX, onThrY: setY, thrXText: s.thrX + '%', thrYText: s.thrY + '%',
+      zoneA: s.thrX + '%', zoneB: (s.thrY - s.thrX) + '%', zoneC: (100 - s.thrY) + '%',
+      stNormal: stc.normal, stAmber: stc.amber, stRed: stc.red,
+      wantsToggle: s.cats.map(c => ({ ...c, ...sel(c.want), budgetText: fmt(c.budget), onClick: () => this.updCat(c.id, x => ({ ...x, want: !x.want })) })),
+      wantsBudget: fmt(wB), exportCsv: () => this.exportCsv(), entryTotal: s.entries.length + ' entries'
+    };
+  }
+}
+</script>
+</body>
+</html>
