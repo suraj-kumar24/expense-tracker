@@ -10,10 +10,12 @@
 <meta property="og:description" content="A free monthly budget tracker for your phone. Log in two taps, no account, works offline.">
 <meta property="og:image" content="shots/overview.jpg">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>
   // Opened from the home-screen icon of an older install: go straight to the app.
   if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) location.replace('app/');
+  // Chrome can offer installation before the page script loads; hold on to it.
+  addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installPrompt = e; });
 </script>
 </head>
 <body>
@@ -130,6 +132,16 @@
   <span><span class="mark sm">₹</span>Envelope</span>
   <span>Free budget tracker · Your data never leaves your device</span>
 </footer>
+
+<dialog class="how" data-how aria-labelledby="how-title">
+  <h3 id="how-title">Install Envelope</h3>
+  <ol>
+    <li>Tap <b>⋮</b> at the top right of Chrome.</li>
+    <li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li>
+  </ol>
+  <button class="pill primary" data-how-install hidden>Install now</button>
+  <button class="pill ghost" data-how-close>Got it</button>
+</dialog>
 
 <script type="module" src="/src/landing.ts"></script>
 </body>

@@ -112,3 +112,11 @@ h1, h2, h3 { margin: 0; }
   .rail figure { width: 210px; }
   .nav .pill { height: 40px; padding: 0 14px; font-size: 14px; }
 }
+
+/* "Install from Chrome's menu" card, shown when Chrome hasn't offered its prompt yet */
+.how { width: min(360px, calc(100% - 32px)); border: none; border-radius: 32px; padding: 24px; background: var(--color-bg); color: var(--color-text); box-shadow: var(--shadow-lg); }
+.how::backdrop { background: var(--kh-scrim); }
+.how h3 { font-size: 24px; }
+.how ol { margin: 14px 0 18px; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.45; }
+.how .pill { width: 100%; }
+.how .pill + .pill { margin-top: 8px; }
