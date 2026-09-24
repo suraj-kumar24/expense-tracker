@@ -39,7 +39,7 @@ async function install(e: Event) {
 }
 function installed() {
   for (const b of [heroBtn, wayBtn]) {
-    b.textContent = 'Open Khata';
+    b.textContent = 'Open Envelope';
     b.onclick = () => location.assign('app/');
   }
   heroBtn.setAttribute('href', 'app/');

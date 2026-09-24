@@ -1,4 +1,4 @@
-// Data model, formatting and derived numbers for Khata. Pure functions only — UI lives in components.
+// Data model, formatting and derived numbers for Envelope. Pure functions only — UI lives in components.
 
 export type Quick = { id: string; label: string; amt: number; sub?: string | null; rec?: boolean };
 export type Cat = { id: string; emoji: string; name: string; budget: number; want: boolean; subs: string[]; quick: Quick[] };
@@ -111,7 +111,7 @@ export const daysInMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth() +
 export const daysLeft = (d: Date) => daysInMonth(d) - d.getDate() + 1;
 
 // ── storage ───────────────────────────────────────────────────────────────
-const KEY = 'khata.v1';
+const KEY = 'khata.v1'; // the app's original name; kept so existing data still loads
 export function emptyData(now: Date): Data {
   const mk = monthKey(now);
   return { version: 1, setupDone: false, startMonth: mk, recurringFiled: mk, cats: clone(PRESETS), entries: [], thrX: 70, thrY: 90, lastAmt: 0, theme: 'light', sortBy: 'custom' };

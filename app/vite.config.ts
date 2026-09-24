@@ -15,8 +15,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'Khata',
-        short_name: 'Khata',
+        name: 'Envelope',
+        short_name: 'Envelope',
         description: 'See where your money goes each month, one category at a time.',
         start_url: 'app/',
         scope: './',

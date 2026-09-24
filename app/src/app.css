@@ -1,4 +1,4 @@
-/* Khata — interaction states and shared shapes on top of the Organic tokens (organic.css). */
+/* Envelope — interaction states and shared shapes on top of the Organic tokens (organic.css). */
 html, body, #root { height: 100%; }
 body { margin: 0; background: var(--color-neutral-200); overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
 a { color: var(--color-accent-700); }

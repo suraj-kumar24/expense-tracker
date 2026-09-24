@@ -17,7 +17,7 @@ export function Welcome({ ctx }: { ctx: Ctx }) {
         <span style={{ position: 'absolute', left: 94, top: 222, fontSize: 40 }}>🛺</span>
       </div>
       <div>
-        <h1 style={{ fontSize: 44, lineHeight: 1, margin: 0, letterSpacing: 0 }}>Khata</h1>
+        <h1 style={{ fontSize: 44, lineHeight: 1, margin: 0, letterSpacing: 0 }}>Envelope</h1>
         <div style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.3, marginTop: 8, textWrap: 'pretty' }}>See where your money goes each month, one category at a time.</div>
       </div>
       <div style={{ ...col, gap: 10, fontSize: 14 }}>
@@ -147,7 +147,7 @@ export function SetupBudgets({ ctx }: { ctx: Ctx }) {
   const updCat = (id: string, fn: (c: Cat) => Cat) => update(d => ({ ...d, cats: d.cats.map(c => (c.id === id ? fn(c) : c)) }));
   const total = data.cats.reduce((a, c) => a + c.budget, 0);
 
-  /** A fixed bill is a monthly quick amount tied to a subcategory; Khata files it on the 1st. */
+  /** A fixed bill is a monthly quick amount tied to a subcategory; Envelope files it on the 1st. */
   const setFixed = (c: Cat, sub: string, raw: string) => {
     const v = Number(raw.replace(/[^\d]/g, '') || 0);
     updCat(c.id, x => {
@@ -187,7 +187,7 @@ export function SetupBudgets({ ctx }: { ctx: Ctx }) {
                   <b style={{ flex: 1, fontSize: 13 }}>Fixed bills <span style={{ fontWeight: 500, color: 'var(--color-neutral-700)' }}>· optional</span></b>
                   {tot > 0 && <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 999, background: over ? 'var(--kh-1)' : 'var(--color-accent-2-200)', color: over ? 'var(--kh-0)' : 'var(--color-accent-2-800)' }}>{fmt(tot)} fixed</span>}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--color-neutral-700)', lineHeight: 1.4 }}>Pay the same amount every month? Enter it and Khata logs it for you on the 1st. Leave blank if it changes.</div>
+                <div style={{ fontSize: 12, color: 'var(--color-neutral-700)', lineHeight: 1.4 }}>Pay the same amount every month? Enter it and Envelope logs it for you on the 1st. Leave blank if it changes.</div>
                 {c.subs.map(n => {
                   const q = fixed.find(x => x.sub === n);
                   return (

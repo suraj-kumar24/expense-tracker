@@ -1,4 +1,4 @@
-/* Khata product page, on the Organic tokens (organic.css) with the app's light/dark palette (theme.css). */
+/* Envelope product page, on the Organic tokens (organic.css) with the app's light/dark palette (theme.css). */
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
 img { max-width: 100%; }

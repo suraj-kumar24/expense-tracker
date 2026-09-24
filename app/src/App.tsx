@@ -73,18 +73,18 @@ export default function App() {
   }, [month, data.setupDone]);
 
   // ── navigation: every screen and sheet is a history entry, so the phone's back button walks back through them.
-  // history.state.khata holds the depth; on popstate, every layer above the new depth is closed.
+  // history.state.layer holds the depth; on popstate, every layer above the new depth is closed.
   const closers = useRef<(() => void)[]>([]);
   const guard = useRef<(() => boolean) | null>(null);
   const waiting = useRef<(() => void)[]>([]);
   const pending = useRef(0); // back steps requested but not yet delivered by popstate
   useEffect(() => {
     const onPop = (e: PopStateEvent) => {
-      const depth = (e.state && e.state.khata) || 0;
+      const depth = (e.state && e.state.layer) || 0;
       pending.current = Math.max(0, pending.current - (closers.current.length - depth));
       if (depth < closers.current.length && guard.current && guard.current()) {
         // Blocked (e.g. unsaved settings): put the history entries back.
-        for (let i = depth; i < closers.current.length; i++) history.pushState({ khata: i + 1 }, '');
+        for (let i = depth; i < closers.current.length; i++) history.pushState({ layer: i + 1 }, '');
         return;
       }
       while (closers.current.length > depth) closers.current.pop()!();
@@ -95,7 +95,7 @@ export default function App() {
   }, []);
   const layer = useCallback((close: () => void) => {
     closers.current.push(close);
-    history.pushState({ khata: closers.current.length }, '');
+    history.pushState({ layer: closers.current.length }, '');
   }, []);
   const back = useCallback((n = 1) => new Promise<void>(resolve => {
     n = Math.min(n, closers.current.length - pending.current);

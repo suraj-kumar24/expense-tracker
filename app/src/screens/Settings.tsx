@@ -46,7 +46,7 @@ export function Settings({ ctx }: { ctx: Ctx }) {
   const dark = matchMedia('(prefers-color-scheme: dark)').matches;
 
   const exportCsv = () => {
-    const name = `khata-${month}.csv`;
+    const name = `envelope-${month}.csv`;
     try {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([toCsv(data)], { type: 'text/csv' }));
