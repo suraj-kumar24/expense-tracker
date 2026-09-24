@@ -1,20 +1,49 @@
+import { useEffect, useState, type ReactNode } from 'react';
 import type { Ctx } from '../ctx';
-import { COL, RED, catView, fmt, toCsv } from '../model';
-import { Back, Download, Phone, Replay } from '../icons';
+import { type Theme, fmt, toCsv } from '../model';
+import { Bell, ChevD, ChevR, Download, Gem, Moon, Tag } from '../icons';
+import { BackBtn, Sheet, sel, useSheet } from '../ui';
 
-const card = { background: 'var(--color-neutral-100)', borderRadius: 32, padding: '18px 20px', display: 'flex', flexDirection: 'column' } as const;
-const pill = { padding: '4px 10px', borderRadius: 999 } as const;
+const card = { background: 'var(--color-neutral-100)', borderRadius: 32, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 14 } as const;
+const badge = { width: 44, height: 44, flex: 'none', borderRadius: '50%', background: 'var(--color-accent-200)', display: 'grid', placeItems: 'center', color: 'var(--color-accent-800)' } as const;
+type Draft = { thrX: number; thrY: number; want: Record<string, boolean> };
 
+/** A card whose header toggles its body open. */
+function Accordion({ icon, title, sub, open, toggle, children }: { icon: ReactNode; title: string; sub: string; open: boolean; toggle: () => void; children: ReactNode }) {
+  return (
+    <div style={card}>
+      <button onClick={toggle} aria-expanded={open} style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', padding: 0, border: 'none', background: 'transparent', textAlign: 'left', cursor: 'pointer', fontFamily: 'var(--font-body)', color: 'var(--color-text)' }}>
+        <span style={badge}>{icon}</span>
+        <span style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}><b style={{ fontSize: 15 }}>{title}</b><span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>{sub}</span></span>
+        <ChevD stroke="var(--color-neutral-700)" style={{ flex: 'none', transition: 'transform .25s', transform: `rotate(${open ? 180 : 0}deg)` }} />
+      </button>
+      {open && children}
+    </div>
+  );
+}
+
+/** Settings. Theme applies at once; alerts and Wants are a draft until Save. */
 export function Settings({ ctx }: { ctx: Ctx }) {
   const { data, update, month } = ctx;
-  const { thrX, thrY } = data;
-  const views = data.cats.map(c => catView(c, data, month));
-  const stc = { normal: 0, amber: 0, red: 0 };
-  views.forEach(c => { stc[c.st === 'over' ? 'red' : c.st]++; });
-  const wantsBudget = data.cats.filter(c => c.want).reduce((a, c) => a + c.budget, 0);
+  const fresh = (): Draft => ({ thrX: data.thrX, thrY: data.thrY, want: Object.fromEntries(data.cats.map(c => [c.id, c.want])) });
+  const [draft, setDraft] = useState<Draft>(fresh);
+  const [open, setOpen] = useState({ theme: false, alerts: false, wants: false });
+  const sheet = useSheet<'discard'>(ctx);
+  const wantOf = (id: string) => draft.want[id] ?? data.cats.find(c => c.id === id)?.want ?? false;
+  const dirty = draft.thrX !== data.thrX || draft.thrY !== data.thrY || data.cats.some(c => wantOf(c.id) !== c.want);
 
-  const setX = (v: number) => update(d => ({ ...d, thrX: Math.min(v, d.thrY - 5) }));
-  const setY = (v: number) => update(d => ({ ...d, thrY: Math.max(v, d.thrX + 5) }));
+  // The phone's back button asks before throwing away unsaved changes.
+  useEffect(() => {
+    ctx.setGuard(dirty && !sheet.kind ? () => { queueMicrotask(() => sheet.open('discard')); return true; } : null);
+    return () => ctx.setGuard(null);
+  });
+
+  const apply = () => update(d => ({ ...d, thrX: draft.thrX, thrY: draft.thrY, cats: d.cats.map(c => ({ ...c, want: wantOf(c.id) })) }));
+  const save = () => { if (!dirty) return; apply(); ctx.toast('Settings saved'); };
+  const leave = () => { ctx.setGuard(null); ctx.back(2); };
+  const setTheme = (t: Theme) => update(d => ({ ...d, theme: t }));
+  const wn = data.cats.filter(c => wantOf(c.id));
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
 
   const exportCsv = () => {
     const name = `khata-${month}.csv`;
@@ -26,68 +55,76 @@ export function Settings({ ctx }: { ctx: Ctx }) {
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
       ctx.toast(`Exported ${name}`);
     } catch {
-      ctx.toast('Couldn’t export — try again');
+      ctx.toast('Couldn’t export. Try again.');
     }
   };
 
   return (
-    <div style={{ padding: '10px 18px 40px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ padding: '10px 18px 0', display: 'flex', flexDirection: 'column', gap: 16, minHeight: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button onClick={ctx.back} aria-label="Back" className="ib"><Back /></button>
-        <h3 style={{ margin: 0 }}>Settings</h3>
+        <BackBtn onClick={() => (dirty ? sheet.open('discard') : ctx.back())} />
+        <h3 style={{ margin: 0, flex: 1 }}>Settings</h3>
+        <button onClick={exportCsv} aria-label="Export CSV" title="Export CSV" className="ib"><Download /></button>
       </div>
 
-      <div style={{ ...card, gap: 12 }}>
-        <h5 style={{ margin: 0 }}>Warning levels</h5>
-        <div style={{ fontSize: 13, color: 'var(--color-neutral-700)', marginTop: -6 }}>Applied to every category.</div>
-        <div style={{ display: 'flex', height: 22, borderRadius: 999, overflow: 'hidden', fontSize: 11, fontWeight: 700 }} aria-hidden="true">
-          <div style={{ width: thrX + '%', background: 'var(--color-accent-2)', color: 'var(--color-accent-2-100)', display: 'flex', alignItems: 'center', paddingLeft: 10 }}>Normal</div>
-          <div style={{ width: thrY - thrX + '%', background: COL.amber.bar, color: 'oklch(0.3 0.07 65)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>Amber</div>
-          <div style={{ width: 100 - thrY + '%', background: RED.bar, color: 'var(--color-neutral-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>Red</div>
-        </div>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <span style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600 }}><span>Amber from</span><b style={{ color: 'oklch(0.44 0.09 65)' }}>{thrX}%</b></span>
-          <input type="range" min={10} max={95} step={5} value={thrX} onChange={e => setX(Number(e.target.value))} style={{ width: '100%', height: 28 }} />
-        </label>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <span style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, fontWeight: 600 }}><span>Red from</span><b style={{ color: RED.fg }}>{thrY}%</b></span>
-          <input type="range" min={15} max={100} step={5} value={thrY} onChange={e => setY(Number(e.target.value))} style={{ width: '100%', height: 28 }} />
-        </label>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', fontSize: 12, fontWeight: 700 }}>
-          <span style={{ ...pill, background: COL.normal.bg, color: COL.normal.fg }}>{stc.normal} on track</span>
-          <span style={{ ...pill, background: COL.amber.bg, color: COL.amber.fg }}>{stc.amber} amber</span>
-          <span style={{ ...pill, background: RED.bg, color: RED.fg }}>{stc.red} red or over</span>
-        </div>
-        <div style={{ fontSize: 12, color: 'var(--color-neutral-700)', marginTop: -4 }}>Red always stays at least 5% above amber.</div>
-      </div>
+      <button onClick={() => ctx.open('manage')} className="row" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', borderRadius: 32 }}>
+        <span style={badge}><Tag /></span>
+        <span style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}><b style={{ fontSize: 15 }}>Categories</b><span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>{data.cats.length} categories · add, rename, budgets, merge</span></span>
+        <ChevR size={18} stroke="var(--color-neutral-600)" />
+      </button>
 
-      <div style={{ ...card, gap: 10 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}><h5 style={{ margin: 0 }}>Wants</h5><b style={{ fontSize: 14 }}>{fmt(wantsBudget)} / month</b></div>
-        <div style={{ fontSize: 13, color: 'var(--color-neutral-700)', marginTop: -4 }}>Tap the categories that count as Wants. Their budgets add up to the Wants budget used for your daily allowance.</div>
+      <Accordion icon={<Moon />} title="Appearance" open={open.theme} toggle={() => setOpen(o => ({ ...o, theme: !o.theme }))}
+        sub={data.theme === 'system' ? `Follows your phone · ${dark ? 'dark' : 'light'} now` : data.theme === 'dark' ? 'Dark' : 'Light'}>
+        <div role="radiogroup" aria-label="Appearance" style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 999, background: 'var(--color-surface)' }}>
+          {([['light', 'Light'], ['dark', 'Dark'], ['system', 'Auto']] as [Theme, string][]).map(([id, label]) => {
+            const s = sel(data.theme === id);
+            return <button key={id} role="radio" aria-checked={data.theme === id} onClick={() => setTheme(id)} className="tab" style={{ flex: 1, height: 40, borderRadius: 999, border: 'none', background: s.background, color: s.color, font: '700 14px var(--font-body)', cursor: 'pointer' }}>{label}</button>;
+          })}
+        </div>
+      </Accordion>
+
+      <Accordion icon={<Bell />} title="Budget alerts" open={open.alerts} toggle={() => setOpen(o => ({ ...o, alerts: !o.alerts }))}
+        sub={`Heads up at ${draft.thrX}% · Almost out at ${draft.thrY}%`}>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600 }}><span style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--kh-6)', flex: 'none' }} /><span style={{ flex: 1 }}>Heads up after</span><b>{draft.thrX}% spent</b></span>
+          <input type="range" min={10} max={95} step={5} value={draft.thrX} onChange={e => setDraft(d => ({ ...d, thrX: Math.min(Number(e.target.value), d.thrY - 5) }))} aria-label="Heads up after percent spent" style={{ width: '100%', height: 28 }} />
+        </label>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600 }}><span style={{ width: 12, height: 12, borderRadius: '50%', background: 'var(--kh-5)', flex: 'none' }} /><span style={{ flex: 1 }}>Almost out after</span><b>{draft.thrY}% spent</b></span>
+          <input type="range" min={15} max={100} step={5} value={draft.thrY} onChange={e => setDraft(d => ({ ...d, thrY: Math.max(Number(e.target.value), d.thrX + 5) }))} aria-label="Almost out after percent spent" style={{ width: '100%', height: 28 }} />
+        </label>
+      </Accordion>
+
+      <Accordion icon={<Gem />} title="Wants" open={open.wants} toggle={() => setOpen(o => ({ ...o, wants: !o.wants }))}
+        sub={wn.length ? `${fmt(wn.reduce((a, c) => a + c.budget, 0))} / month · ${wn.map(c => c.emoji).join(' ')}` : 'Off · no categories picked'}>
+        <div style={{ fontSize: 13, color: 'var(--color-neutral-700)' }}>Tap the categories that count as Wants.</div>
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {data.cats.map(c => (
-            <button key={c.id} onClick={() => update(d => ({ ...d, cats: d.cats.map(x => (x.id === c.id ? { ...x, want: !x.want } : x)) }))} aria-pressed={c.want} className="hb pr96" style={{ height: 38, padding: '0 13px 0 9px', borderRadius: 999, border: `1.5px solid ${c.want ? 'var(--color-accent)' : 'var(--color-divider)'}`, background: c.want ? 'var(--color-accent)' : 'var(--color-neutral-100)', color: c.want ? 'var(--color-neutral-100)' : 'var(--color-text)', font: '600 13px var(--font-body)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ fontSize: 17 }}>{c.emoji}</span>{c.name}
-            </button>
-          ))}
+          {data.cats.map(c => {
+            const on = wantOf(c.id);
+            return (
+              <button key={c.id} onClick={() => setDraft(d => ({ ...d, want: { ...d.want, [c.id]: !on } }))} aria-pressed={on} className="hb pr96" style={{ height: 38, padding: '0 13px 0 9px', borderRadius: 999, border: '1.5px solid', ...sel(on), font: '600 13px var(--font-body)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ fontSize: 17 }}>{c.emoji}</span>{c.name}
+              </button>
+            );
+          })}
         </div>
+      </Accordion>
+
+      <div style={{ flex: 1, marginTop: -16 }} />
+      <div style={{ position: 'sticky', bottom: 0, margin: '0 -18px', padding: '12px 18px calc(20px + env(safe-area-inset-bottom))', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column', zIndex: 2 }}>
+        <button onClick={save} disabled={!dirty} className="dim" style={{ height: 56, borderRadius: 999, border: 'none', background: dirty ? 'var(--color-accent)' : 'var(--color-neutral-300)', color: dirty ? 'var(--color-neutral-100)' : 'var(--color-neutral-700)', fontFamily: 'var(--font-heading)', fontSize: 18, cursor: dirty ? 'pointer' : 'not-allowed' }}>Save</button>
       </div>
 
-      <div style={{ ...card, padding: '6px 20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid var(--color-divider)', fontSize: 14 }}><span>Currency</span><b>₹ Indian Rupee</b></div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', fontSize: 14 }}><span>Month starts on</span><b>1st</b></div>
-      </div>
-
-      <div style={{ ...card, gap: 10, background: 'var(--color-accent-2-200)', color: 'var(--color-accent-2-900)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-accent-2-100)', display: 'grid', placeItems: 'center', flex: 'none' }}><Phone /></span>
-          <h5 style={{ margin: 0 }}>Everything stays on this phone</h5>
-        </div>
-        <div style={{ fontSize: 13, lineHeight: 1.5 }}>No account, no login, no internet. Your {data.entries.length} {data.entries.length === 1 ? 'entry is' : 'entries are'} saved in the app’s storage on this device as you make them. Uninstalling the app deletes them — export a CSV to keep a copy.</div>
-        <button onClick={exportCsv} className="sage-dark" style={{ height: 46, borderRadius: 999, border: 'none', fontFamily: 'var(--font-heading)', fontSize: 15, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}><Download size={18} />Export CSV</button>
-      </div>
-
-      <button onClick={() => ctx.open('welcome')} className="bo" style={{ height: 48, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}><Replay size={18} />Replay setup</button>
+      {sheet.kind === 'discard' && (
+        <Sheet onClose={sheet.close} label="Discard changes?">
+          <h4 style={{ margin: 0 }}>Discard changes?</h4>
+          <div style={{ fontSize: 14, color: 'var(--color-neutral-800)' }}>Your settings changes haven’t been saved.</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={leave} className="bo" style={{ flex: 1, height: 50, fontSize: 16 }}>Discard</button>
+            <button onClick={() => { apply(); leave(); ctx.toast('Settings saved'); }} className="bp" style={{ flex: 1, height: 50, fontSize: 16 }}>Save</button>
+          </div>
+        </Sheet>
+      )}
     </div>
   );
 }

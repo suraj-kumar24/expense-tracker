@@ -13,7 +13,11 @@ export type Data = {
   thrX: number; // amber from (% of budget)
   thrY: number; // red from
   lastAmt: number;
+  theme: Theme;
+  sortBy: SortBy;
 };
+export type Theme = 'light' | 'dark' | 'system';
+export type SortBy = 'custom' | 'used' | 'fresh' | 'name';
 
 export const PRESETS: Cat[] = [
   { id: 'housing', emoji: '🏠', name: 'Housing', budget: 25000, want: false, subs: ['Rent', 'Electricity', 'Water'], quick: [] },
@@ -32,10 +36,11 @@ export const EXTRA: Pick<Cat, 'id' | 'emoji' | 'name'>[] = [
   { id: 'pets', emoji: '🐾', name: 'Pets' }
 ];
 
-export const RED = { bar: 'oklch(0.5 0.18 18)', bg: 'oklch(0.93 0.045 18)', fg: 'oklch(0.44 0.17 20)' };
+// Warning colours live in --kh-* variables (app.css) so dark mode can retune them.
+export const RED = { bar: 'var(--kh-5)', bg: 'var(--kh-1)', fg: 'var(--kh-0)', ink: 'var(--kh-2)' };
 export const COL = {
   normal: { bar: 'var(--color-accent-2)', bg: 'var(--color-accent-2-100)', fg: 'var(--color-accent-2-800)' },
-  amber: { bar: 'oklch(0.79 0.15 78)', bg: 'oklch(0.95 0.06 88)', fg: 'oklch(0.44 0.09 65)' },
+  amber: { bar: 'var(--kh-6)', bg: 'var(--kh-9)', fg: 'var(--kh-10)' },
   red: RED
 };
 export const SLICE = ['var(--color-accent)', 'var(--color-accent-2)', 'var(--color-accent-400)', 'var(--color-accent-2-400)', 'var(--color-accent-700)', 'var(--color-accent-2-700)', 'var(--color-neutral-500)', 'var(--color-accent-300)', 'var(--color-accent-2-300)', 'var(--color-neutral-700)', 'var(--color-accent-800)', 'var(--color-accent-2-800)'];
@@ -89,8 +94,16 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const monthLong = (key: string) => MONTHS[Number(key.slice(5, 7)) - 1];
 export const monthShort = (key: string) => monthLong(key).slice(0, 3);
-/** "Wednesday, 23 September" */
-export const longDate = (d: Date) => `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+/** Home title: "Wednesday 23 September", or the countdown in the month's first and last week. */
+export function monthTitle(d: Date): string {
+  const name = MONTHS[d.getMonth()], left = daysLeft(d);
+  if (d.getDate() === 1) return `${name} starts today`;
+  if (left === 1) return `Last day of ${name}`;
+  if (left <= 7) return `${left} days left in ${name}`;
+  return `${DAYS[d.getDay()]} ${d.getDate()} ${name}`;
+}
+/** "Oct ’25" */
+export const monthTick = (key: string) => monthShort(key) + ' ’' + key.slice(2, 4);
 export const monthYear = (key: string) => monthShort(key) + ' ' + key.slice(0, 4);
 export const dayMonth = (date: string) => Number(date.slice(8, 10)) + ' ' + monthShort(date);
 export const daysInMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
@@ -101,14 +114,14 @@ export const daysLeft = (d: Date) => daysInMonth(d) - d.getDate() + 1;
 const KEY = 'khata.v1';
 export function emptyData(now: Date): Data {
   const mk = monthKey(now);
-  return { version: 1, setupDone: false, startMonth: mk, recurringFiled: mk, cats: clone(PRESETS), entries: [], thrX: 70, thrY: 90, lastAmt: 0 };
+  return { version: 1, setupDone: false, startMonth: mk, recurringFiled: mk, cats: clone(PRESETS), entries: [], thrX: 70, thrY: 90, lastAmt: 0, theme: 'light', sortBy: 'custom' };
 }
 export function load(now: Date): Data {
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const d = JSON.parse(raw) as Data;
-      if (d && d.version === 1 && Array.isArray(d.cats) && Array.isArray(d.entries)) return d;
+      if (d && d.version === 1 && Array.isArray(d.cats) && Array.isArray(d.entries)) return { ...emptyData(now), ...d };
     }
   } catch { /* fall through to a fresh start */ }
   return emptyData(now);
@@ -140,7 +153,7 @@ export const levelOf = (pct: number, thrX: number, thrY: number): Level =>
 
 export type CatView = Cat & {
   spent: number; pct: number; st: Level; bar: string; tagBg: string; tagFg: string; barW: string;
-  tagText: string; leftText: string; count: number; countText: string;
+  tagText: string; leftText: string; leftShort: string; count: number; countText: string;
 };
 export function catView(c: Cat, d: Data, month: string): CatView {
   const spent = spentIn(d.entries, c.id, month);
@@ -150,7 +163,8 @@ export function catView(c: Cat, d: Data, month: string): CatView {
   const count = d.entries.filter(e => e.cat === c.id && monthOf(e.date) === month).length;
   return {
     ...c, spent, pct: Math.round(pct), st, bar: col.bar, tagBg: col.bg, tagFg: col.fg, barW: Math.min(pct, 100) + '%',
-    tagText: st === 'over' ? fmt(spent - c.budget) + ' over' : st === 'normal' ? 'On track' : Math.round(pct) + '% used',
+    tagText: st === 'over' ? 'Over by ' + fmt(spent - c.budget) : st === 'normal' ? 'On track' : Math.round(pct) + '% used',
+    leftShort: st === 'over' ? 'Over by ' + fmt(spent - c.budget) : fmt(c.budget - spent) + ' left',
     leftText: st === 'over' ? fmt(spent - c.budget) + ' over budget' : fmt(c.budget - spent) + ' left',
     count, countText: count + (count === 1 ? ' entry' : ' entries')
   };
@@ -170,3 +184,12 @@ export function toCsv(d: Data): string {
   const rows = [...d.entries].sort((a, b) => a.date.localeCompare(b.date)).map(e => [e.date, names[e.cat] || '', e.sub || '', e.amt]);
   return [['date', 'category', 'subcategory', 'amount'], ...rows].map(r => r.map(q).join(',')).join('\n');
 }
+
+/** Months shown in Insights: the last 12, never before tracking started. Oldest first. */
+export function insightMonths(d: Data, month: string): string[] {
+  const out: string[] = [];
+  for (let i = 11; i >= 0; i--) { const m = addMonths(month, -i); if (m >= d.startMonth) out.push(m); }
+  return out;
+}
+export const monthTotal = (d: Data, month: string) =>
+  d.entries.reduce((s, e) => (monthOf(e.date) === month && d.cats.some(c => c.id === e.cat) ? s + e.amt : s), 0);

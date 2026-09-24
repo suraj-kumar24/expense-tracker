@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Ctx, DialogKind, Screen } from './ctx';
+import type { Ctx, Screen } from './ctx';
 import { type Data, fileRecurring, fmt, load, monthKey, save } from './model';
-import { Check, Close } from './icons';
+import { Check, Close, Plus } from './icons';
 import { Welcome, SetupCats, SetupBudgets } from './screens/Setup';
 import { Overview } from './screens/Overview';
 import { Insights } from './screens/Insights';
-import { Detail, DetailDialog } from './screens/Detail';
+import { Detail } from './screens/Detail';
+import { Manage } from './screens/Manage';
 import { Settings } from './screens/Settings';
 import { LogSheet } from './screens/LogSheet';
 
 type Toast = { text: string; undo?: () => void } | null;
-type Dialog = { kind: DialogKind; entryId?: string } | null;
+type LogOpts = { cat?: string; entryId?: string; key: number };
 
 /** Re-reads the clock whenever the app comes back to the foreground, so "today" stays right. */
 function useNow() {
@@ -30,14 +31,25 @@ export default function App() {
   const [data, setData] = useState<Data>(() => load(new Date()));
   const [screen, setScreen] = useState<Screen>(() => (data.setupDone ? 'overview' : 'welcome'));
   const [detailId, setDetailId] = useState<string>('');
-  const [logOpen, setLogOpen] = useState<{ cat?: string; key: number } | null>(null);
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [log, setLog] = useState<LogOpts | null>(null);
   const [toast, setToast] = useState<Toast>(null);
   const scRef = useRef<HTMLDivElement>(null);
   const tt = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => { save(data); }, [data]);
   useEffect(() => { navigator.storage?.persist?.().catch(() => {}); }, []);
+
+  // Theme: the palette swap lives in app.css under [data-theme].
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = data.theme;
+    const meta = document.querySelector('meta[name=theme-color]');
+    const apply = () => meta?.setAttribute('content', getComputedStyle(root).getPropertyValue('--color-bg').trim() || '#f5ead8');
+    apply();
+    const mq = matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, [data.theme]);
 
   const update = useCallback((fn: (d: Data) => Data) => setData(fn), []);
 
@@ -55,92 +67,93 @@ export default function App() {
     setData(next);
     const ids = new Set(filed.map(e => e.id));
     const total = filed.reduce((a, e) => a + e.amt, 0);
-    showToast(`Filed ${filed.length} monthly amount${filed.length === 1 ? '' : 's'} · ${fmt(total)}`, () => {
-      setData(d => ({ ...d, entries: d.entries.filter(e => !ids.has(e.id)) }));
-      setToast(null);
-    });
+    showToast(`Filed ${filed.length} fixed bill${filed.length === 1 ? '' : 's'} · ${fmt(total)}`, () =>
+      setData(d => ({ ...d, entries: d.entries.filter(e => !ids.has(e.id)) })));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, data.setupDone]);
 
-  // ── navigation: every layer is a history entry, so the phone's back button walks back through them ──
+  // ── navigation: every screen and sheet is a history entry, so the phone's back button walks back through them.
+  // history.state.khata holds the depth; on popstate, every layer above the new depth is closed.
   const closers = useRef<(() => void)[]>([]);
-  const skip = useRef(0);
+  const guard = useRef<(() => boolean) | null>(null);
+  const waiting = useRef<(() => void)[]>([]);
+  const pending = useRef(0); // back steps requested but not yet delivered by popstate
   useEffect(() => {
-    const onPop = () => {
-      if (skip.current > 0) { skip.current--; return; }
-      closers.current.pop()?.();
+    const onPop = (e: PopStateEvent) => {
+      const depth = (e.state && e.state.khata) || 0;
+      pending.current = Math.max(0, pending.current - (closers.current.length - depth));
+      if (depth < closers.current.length && guard.current && guard.current()) {
+        // Blocked (e.g. unsaved settings): put the history entries back.
+        for (let i = depth; i < closers.current.length; i++) history.pushState({ khata: i + 1 }, '');
+        return;
+      }
+      while (closers.current.length > depth) closers.current.pop()!();
+      waiting.current.splice(0).forEach(r => r());
     };
     addEventListener('popstate', onPop);
     return () => removeEventListener('popstate', onPop);
   }, []);
-  const pushLayer = (close: () => void) => {
+  const layer = useCallback((close: () => void) => {
     closers.current.push(close);
     history.pushState({ khata: closers.current.length }, '');
-  };
-  const back = useCallback(() => { if (closers.current.length) history.back(); }, []);
-  /** Forget the top `n` layers without running their closers. */
-  const drop = (n: number) => {
-    n = Math.min(n, closers.current.length);
-    if (!n) return;
-    closers.current.splice(-n);
-    skip.current++;
+  }, []);
+  const back = useCallback((n = 1) => new Promise<void>(resolve => {
+    n = Math.min(n, closers.current.length - pending.current);
+    if (n <= 0) return resolve();
+    pending.current += n;
+    waiting.current.push(resolve);
     history.go(-n);
-  };
+  }), []);
   const scrollTop = () => { if (scRef.current) scRef.current.scrollTop = 0; };
 
   const ctx: Ctx = {
-    data, update, now, month, toast: showToast, back,
+    data, update, now, month, toast: showToast, back, layer,
     open: (s, id) => {
       const prev = screen, prevId = detailId;
-      pushLayer(() => { setScreen(prev); setDetailId(prevId); setDialog(null); });
-      setScreen(s); if (id) setDetailId(id); setDialog(null); scrollTop();
+      layer(() => { setScreen(prev); setDetailId(prevId); guard.current = null; });
+      setScreen(s); if (id) setDetailId(id); scrollTop();
     },
-    reset: s => { drop(closers.current.length); setScreen(s); setDialog(null); setLogOpen(null); scrollTop(); },
-    openLog: cat => { pushLayer(() => setLogOpen(null)); setLogOpen({ cat, key: Date.now() }); },
-    openDialog: (kind, entryId) => {
-      if (dialog) setDialog({ kind, entryId }); // swap in place (e.g. Delete → Merge instead)
-      else { pushLayer(() => setDialog(null)); setDialog({ kind, entryId }); }
-    }
-  };
-  /** Close the dialog, then leave the detail screen and land on another. Used by merge and delete. */
-  const leaveDetail = (to: Screen, id?: string) => {
-    setDialog(null);
-    if (to === 'detail' && id) {
-      drop(1); // just the dialog — detail stays open, now on another category
-      setDetailId(id);
-    } else {
-      drop(2);
-      setScreen(to);
-    }
-    scrollTop();
+    reset: s => {
+      const n = closers.current.length;
+      closers.current = [];
+      guard.current = null;
+      pending.current = 0;
+      if (n) history.go(-n); // popstate finds nothing to close
+      setScreen(s); setLog(null); scrollTop();
+    },
+    showDetail: id => { setDetailId(id); scrollTop(); },
+    openLog: opts => { layer(() => setLog(null)); setLog({ ...opts, key: Date.now() }); },
+    setGuard: fn => { guard.current = fn; }
   };
 
   const detail = data.cats.find(c => c.id === detailId);
-  const onScreen = (s: Screen) => screen === s;
+  const on = (s: Screen) => screen === s;
+  const fab = (on('overview') || (on('detail') && detail)) && !log;
 
   return (
     <div className="shell">
-      <div className="phone">
+      <div className="phone" id="phone">
         <div ref={scRef} className="scroll">
-          {onScreen('welcome') && <Welcome ctx={ctx} />}
-          {onScreen('setup-cats') && <SetupCats ctx={ctx} />}
-          {onScreen('setup-budgets') && <SetupBudgets ctx={ctx} />}
-          {onScreen('overview') && <Overview ctx={ctx} />}
-          {onScreen('insights') && <Insights ctx={ctx} />}
-          {onScreen('detail') && detail && <Detail ctx={ctx} cat={detail} />}
-          {onScreen('settings') && <Settings ctx={ctx} />}
+          {on('welcome') && <Welcome ctx={ctx} />}
+          {on('setup-cats') && <SetupCats ctx={ctx} />}
+          {on('setup-budgets') && <SetupBudgets ctx={ctx} />}
+          {on('overview') && <Overview ctx={ctx} />}
+          {on('insights') && <Insights ctx={ctx} />}
+          {on('detail') && detail && <Detail ctx={ctx} cat={detail} />}
+          {on('manage') && <Manage ctx={ctx} />}
+          {on('settings') && <Settings ctx={ctx} />}
         </div>
 
-        {onScreen('overview') && !logOpen && (
-          <button onClick={() => ctx.openLog()} className="bp pr98" style={{ position: 'absolute', right: 18, bottom: 'calc(22px + env(safe-area-inset-bottom))', height: 60, padding: '0 24px 0 18px', fontSize: 18, display: 'flex', alignItems: 'center', gap: 8, boxShadow: 'var(--shadow-lg)', zIndex: 4 }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg>Log expense
+        {fab && (
+          <button onClick={() => ctx.openLog(on('detail') ? { cat: detailId } : undefined)} className="bp pr98" style={{ position: 'absolute', right: 18, bottom: 'calc(22px + env(safe-area-inset-bottom))', height: 60, padding: '0 24px 0 18px', fontSize: 18, display: 'flex', alignItems: 'center', gap: 8, boxShadow: 'var(--shadow-lg)', zIndex: 4 }}>
+            <Plus size={22} />Add expense
           </button>
         )}
 
-        {logOpen && <LogSheet key={logOpen.key} ctx={ctx} initialCat={logOpen.cat} />}
+        {log && <LogSheet key={log.key} ctx={ctx} lockedCat={log.cat} entryId={log.entryId} />}
 
         {toast && (
-          <div role="status" style={{ position: 'absolute', left: 14, right: 14, bottom: 'calc(96px + env(safe-area-inset-bottom))', zIndex: 20, background: 'var(--color-neutral-900)', color: 'var(--color-neutral-100)', borderRadius: 24, padding: '10px 10px 10px 18px', display: 'flex', alignItems: 'center', gap: 10, boxShadow: 'var(--shadow-lg)' }} className="sheet">
+          <div role="status" className="sheet" style={{ position: 'absolute', left: 14, right: 14, bottom: 'calc(96px + env(safe-area-inset-bottom))', zIndex: 20, background: 'var(--color-neutral-900)', color: 'var(--color-neutral-100)', borderRadius: 24, padding: '10px 10px 10px 18px', display: 'flex', alignItems: 'center', gap: 10, boxShadow: 'var(--shadow-lg)' }}>
             <Check stroke="var(--color-accent-2-300)" style={{ flex: 'none' }} />
             <span style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{toast.text}</span>
             {toast.undo && (
@@ -150,15 +163,6 @@ export default function App() {
               <Close size={16} />
             </button>
           </div>
-        )}
-
-        {dialog && detail && (
-          <>
-            <div className="scrim" onClick={back} style={{ zIndex: 30 }} />
-            <div role="dialog" aria-modal="true" className="sheet" style={{ position: 'absolute', left: 12, right: 12, bottom: 'calc(16px + env(safe-area-inset-bottom))', zIndex: 31, background: 'var(--color-bg)', borderRadius: 32, padding: '22px 20px 18px', display: 'flex', flexDirection: 'column', gap: 12, boxShadow: 'var(--shadow-lg)' }}>
-              <DetailDialog key={dialog.kind + (dialog.entryId || "")} ctx={ctx} cat={detail} kind={dialog.kind} entryId={dialog.entryId} leave={leaveDetail} />
-            </div>
-          </>
         )}
       </div>
     </div>

@@ -24,3 +24,12 @@ export const Merge = (p: P) => <Icon {...p}><circle cx="18" cy="18" r="3" /><cir
 export const Trash = (p: P) => <Icon {...p}><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></Icon>;
 export const Download = (p: P) => <Icon {...p}><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5" /></Icon>;
 export const Replay = (p: P) => <Icon {...p}><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></Icon>;
+export const More = (p: P) => <Icon {...p}><circle cx="12" cy="5" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /></Icon>;
+export const ChevR = (p: P) => <Icon {...p}><path d="m9 18 6-6-6-6" /></Icon>;
+export const ChevL = (p: P) => <Icon {...p}><path d="m15 18-6-6 6-6" /></Icon>;
+export const ChevD = (p: P) => <Icon {...p}><path d="m6 9 6 6 6-6" /></Icon>;
+export const Sort = (p: P) => <Icon {...p}><path d="m21 16-4 4-4-4M17 20V4M3 8l4-4 4 4M7 4v16" /></Icon>;
+export const Tag = (p: P) => <Icon {...p}><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></Icon>;
+export const Moon = (p: P) => <Icon {...p}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></Icon>;
+export const Bell = (p: P) => <Icon {...p}><path d="M10.268 21a2 2 0 0 0 3.464 0" /><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></Icon>;
+export const Gem = (p: P) => <Icon {...p}><path d="M6 3h12l4 6-10 13L2 9Z" /><path d="M11 3 8 9l4 13 4-13-3-6" /><path d="M2 9h20" /></Icon>;
