@@ -5,7 +5,10 @@ import { Back, Backspace, Check, Close, Trash } from '../icons';
 import { sel } from '../ui';
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del'];
-const label40 = { width: 40, fontSize: 12, color: 'var(--color-neutral-700)', fontWeight: 600 } as const;
+const label40 = { width: 40, flex: 'none', fontSize: 12, color: 'var(--color-neutral-700)', fontWeight: 600 } as const;
+/** A labelled chip row that scrolls sideways to the sheet's right edge, like the category chips. */
+const chipRow = { display: 'flex', alignItems: 'center', gap: 6, marginRight: -18, flex: 'none' } as const;
+const chipScroll = { display: 'flex', gap: 6, overflowX: 'auto', padding: '2px 18px 2px 0', flex: 1, minWidth: 0 } as const;
 const ease = '.45s cubic-bezier(.22,.8,.26,1)';
 
 /**
@@ -138,26 +141,30 @@ export function LogSheet({ ctx, lockedCat, entryId }: { ctx: Ctx; lockedCat?: st
             )}
 
             {cat && cat.subs.length > 0 && (
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={chipRow}>
                 <span style={label40}>Sub</span>
+                <div className="hscroll" style={chipScroll}>
                 {cat.subs.map(n => (
-                  <button key={n} onClick={() => setSub(sub === n ? null : n)} aria-pressed={sub === n} className="hb pr96" style={{ height: 34, padding: '0 13px', borderRadius: 999, border: '1.5px solid', ...sel(sub === n), font: '600 13px var(--font-body)', cursor: 'pointer' }}>{n}</button>
+                  <button key={n} onClick={() => setSub(sub === n ? null : n)} aria-pressed={sub === n} className="hb pr96" style={{ flex: 'none', whiteSpace: 'nowrap', height: 34, padding: '0 13px', borderRadius: 999, border: '1.5px solid', ...sel(sub === n), font: '600 13px var(--font-body)', cursor: 'pointer' }}>{n}</button>
                 ))}
+                </div>
               </div>
             )}
 
             {cat && cat.quick.length > 0 && (
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={chipRow}>
                 <span style={label40}>Quick</span>
+                <div className="hscroll" style={chipScroll}>
                 {cat.quick.map(q => {
                   const on = Number(amt) === q.amt && (!q.sub || sub === q.sub);
                   const hasSub = !!q.sub && cat.subs.includes(q.sub);
                   return (
-                    <button key={q.id} aria-pressed={on} onClick={() => { if (on) { setAmt(''); if (hasSub) setSub(null); } else { setAmt(String(q.amt)); if (hasSub) setSub(q.sub!); } }} className="pr96 dimmer" style={{ height: 36, padding: '0 13px', borderRadius: 999, border: `1.5px solid ${on ? 'var(--color-accent-2-700)' : 'transparent'}`, background: on ? 'var(--color-accent-2-700)' : 'var(--color-accent-2-200)', color: on ? 'var(--color-accent-2-100)' : 'var(--color-accent-2-900)', font: '600 13px var(--font-body)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, transition: 'background .2s, color .2s' }}>
+                    <button key={q.id} aria-pressed={on} onClick={() => { if (on) { setAmt(''); if (hasSub) setSub(null); } else { setAmt(String(q.amt)); if (hasSub) setSub(q.sub!); } }} className="pr96 dimmer" style={{ flex: 'none', whiteSpace: 'nowrap', height: 36, padding: '0 13px', borderRadius: 999, border: `1.5px solid ${on ? 'var(--color-accent-2-700)' : 'transparent'}`, background: on ? 'var(--color-accent-2-700)' : 'var(--color-accent-2-200)', color: on ? 'var(--color-accent-2-100)' : 'var(--color-accent-2-900)', font: '600 13px var(--font-body)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, transition: 'background .2s, color .2s' }}>
                       {on ? <Check size={15} sw={3} /> : <span style={{ fontSize: 15, lineHeight: 1 }}>⚡</span>}{q.label} {fmt(q.amt)}
                     </button>
                   );
                 })}
+                </div>
               </div>
             )}
 
