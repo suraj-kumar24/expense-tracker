@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Ctx } from '../ctx';
-import { type SortBy, addMonths, catView, daysInMonth, daysLeft, fmt, monthLong, monthTitle } from '../model';
+import { type SortBy, addMonths, catView, daysLeft, fmt, monthLong, monthTitle } from '../model';
 import { Check, ChevR, Pie, Sliders, Sort } from '../icons';
 import { CloseBtn, Sheet, SpentCard, useSheet } from '../ui';
 
@@ -32,7 +32,6 @@ export function Overview({ ctx }: { ctx: Ctx }) {
   else if (sortBy === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name));
   const sortLabel = SORTS.find(o => o[0] === sortBy)?.[2] || '';
   const ok = wL > 0;
-  const lastDay = `${daysInMonth(now)} ${monthLong(month).slice(0, 3)}`;
   const nextFirst = '1 ' + monthLong(addMonths(month, 1)).slice(0, 3);
 
   return (
@@ -129,9 +128,7 @@ export function Overview({ ctx }: { ctx: Ctx }) {
               <span>{fmt(wS)} of {fmt(wB)}</span>
               <b>{wL > 0 ? fmt(wL) + ' left' : wL < 0 ? 'Over by ' + fmt(-wL) : 'All used'}</b>
             </div>
-            <div style={{ fontSize: 13, lineHeight: 1.45 }}>
-              {ok ? `${fmt(wL)} left ÷ ${left} ${left === 1 ? 'day' : 'days'} = ${perDay} a day for fun spends until ${lastDay}.` : `Your Wants budget is used up. Stick to Needs until it resets on ${nextFirst}.`}
-            </div>
+            {!ok && <div style={{ fontSize: 13, lineHeight: 1.45 }}>Your Wants budget is used up. Stick to Needs until it resets on {nextFirst}.</div>}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {wants.map(w => (
