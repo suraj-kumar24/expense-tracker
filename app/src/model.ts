@@ -22,7 +22,7 @@ export type SortBy = 'custom' | 'used' | 'fresh' | 'name';
 export const PRESETS: Cat[] = [
   { id: 'housing', emoji: '🏠', name: 'Housing', budget: 25000, want: false, subs: ['Rent', 'Electricity', 'Water'], quick: [] },
   { id: 'groceries', emoji: '🛒', name: 'Groceries', budget: 8000, want: false, subs: [], quick: [] },
-  { id: 'food', emoji: '🍜', name: 'Eating out', budget: 4000, want: true, subs: ['Swiggy', 'Cafés'], quick: [] },
+  { id: 'food', emoji: '🍜', name: 'Eating out', budget: 4000, want: true, subs: ['Zomato', 'Cafés'], quick: [] },
   { id: 'transport', emoji: '🛺', name: 'Transport', budget: 3000, want: false, subs: ['Auto', 'Metro'], quick: [] },
   { id: 'shopping', emoji: '🛍️', name: 'Shopping', budget: 3000, want: true, subs: [], quick: [] },
   { id: 'fun', emoji: '🎬', name: 'Entertainment', budget: 2000, want: true, subs: ['Movies', 'Subscriptions'], quick: [] },
