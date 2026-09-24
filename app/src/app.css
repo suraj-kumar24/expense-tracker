@@ -9,7 +9,8 @@ button:disabled { cursor: not-allowed; }
 input { color: var(--color-text); }
 
 /* App shell: full-screen on a phone, a centred column on anything wider. */
-.shell { position: fixed; inset: 0; display: flex; justify-content: center; }
+/* Sized to the visible viewport, so an on-screen keyboard pushes sheets up instead of covering them. */
+.shell { position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-height, 100%); display: flex; justify-content: center; }
 .phone {
   position: relative; width: 100%; max-width: 480px; height: 100%; overflow: hidden;
   background: var(--color-bg); color: var(--color-text); font-family: var(--font-body);

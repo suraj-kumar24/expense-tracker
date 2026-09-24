@@ -102,9 +102,9 @@ export function SetupCats({ ctx }: { ctx: Ctx }) {
           );
         })}
       </div>
-      <form onSubmit={e => { e.preventDefault(); addCustom(); }} style={{ display: 'flex', gap: 6, alignItems: 'center', padding: 6, borderRadius: 999, background: 'var(--color-surface)' }}>
-        <input value={customEmoji} onChange={e => setCustomEmoji(e.target.value)} placeholder="🙂" aria-label="Emoji" maxLength={4} style={{ width: 48, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', textAlign: 'center', fontSize: 20 }} />
-        <input value={customName} onChange={e => setCustomName(e.target.value)} placeholder="Your own category" aria-label="Category name" style={{ flex: 1, minWidth: 0, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
+      <form autoComplete="off" onSubmit={e => { e.preventDefault(); addCustom(); }} style={{ display: 'flex', gap: 6, alignItems: 'center', padding: 6, borderRadius: 999, background: 'var(--color-surface)' }}>
+        <input autoComplete="off" value={customEmoji} onChange={e => setCustomEmoji(e.target.value)} placeholder="🙂" aria-label="Emoji" maxLength={4} style={{ width: 48, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', textAlign: 'center', fontSize: 20 }} />
+        <input autoComplete="off" value={customName} onChange={e => setCustomName(e.target.value)} placeholder="Your own category" aria-label="Category name" style={{ flex: 1, minWidth: 0, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
         <button type="submit" className="dark" style={{ height: 44, padding: '0 16px', borderRadius: 999, border: 'none', font: '700 14px var(--font-body)', cursor: 'pointer' }}>Add</button>
       </form>
       <div>
@@ -126,8 +126,8 @@ export function SetupCats({ ctx }: { ctx: Ctx }) {
               <button onClick={() => { setSubFor(c.id); setSubDraft(''); }} className="dashed" style={{ height: 30, padding: '0 10px', borderRadius: 999, font: '600 12px var(--font-body)', color: 'var(--color-accent-700)', cursor: 'pointer' }}>+ sub</button>
             </div>
             {subFor === c.id && (
-              <form onSubmit={e => { e.preventDefault(); addSub(c.id); }} style={{ display: 'flex', gap: 6 }}>
-                <input autoFocus value={subDraft} onChange={e => setSubDraft(e.target.value)} placeholder="Subcategory name" aria-label="Subcategory name" className="field" style={{ flex: 1, minWidth: 0, height: 40, background: 'var(--color-bg)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
+              <form autoComplete="off" onSubmit={e => { e.preventDefault(); addSub(c.id); }} style={{ display: 'flex', gap: 6 }}>
+                <input autoComplete="off" autoFocus value={subDraft} onChange={e => setSubDraft(e.target.value)} placeholder="Subcategory name" aria-label="Subcategory name" className="field" style={{ flex: 1, minWidth: 0, height: 40, background: 'var(--color-bg)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
                 <button type="submit" className="bp" style={{ height: 40, padding: '0 14px', font: '700 13px var(--font-body)' }}>Add</button>
                 <button type="button" onClick={() => setSubFor(null)} className="ghost-sm" style={{ height: 40, padding: '0 10px', borderRadius: 999, border: 'none', font: '600 13px var(--font-body)', cursor: 'pointer' }}>Cancel</button>
               </form>
@@ -177,7 +177,7 @@ export function SetupBudgets({ ctx }: { ctx: Ctx }) {
               <span style={{ fontSize: 24 }}>{c.emoji}</span>
               <b style={{ flex: 1, fontSize: 15, minWidth: 0 }}>{c.name}</b>
               <label style={{ display: 'flex', alignItems: 'center', gap: 2, height: 44, width: 128, padding: '0 14px', borderRadius: 999, background: 'var(--color-surface)', fontWeight: 700 }}>
-                ₹<input value={String(c.budget)} onChange={e => { const v = e.target.value.replace(/[^\d]/g, ''); updCat(c.id, x => ({ ...x, budget: Number(v || 0) })); }} inputMode="numeric" aria-label={`${c.name} budget`} onFocus={e => e.target.select()} style={{ width: '100%', border: 'none', background: 'transparent', font: '700 15px var(--font-body)', textAlign: 'right', outline: 'none' }} />
+                ₹<input autoComplete="off" value={String(c.budget)} onChange={e => { const v = e.target.value.replace(/[^\d]/g, ''); updCat(c.id, x => ({ ...x, budget: Number(v || 0) })); }} inputMode="numeric" aria-label={`${c.name} budget`} onFocus={e => e.target.select()} style={{ width: '100%', border: 'none', background: 'transparent', font: '700 15px var(--font-body)', textAlign: 'right', outline: 'none' }} />
               </label>
             </div>
             {c.subs.length > 0 && (
@@ -194,7 +194,7 @@ export function SetupBudgets({ ctx }: { ctx: Ctx }) {
                     <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{n}</span>
                       <label style={{ display: 'flex', alignItems: 'center', gap: 2, height: 40, width: 118, padding: '0 12px', borderRadius: 999, background: 'var(--color-neutral-100)', border: `1.5px solid ${q ? 'var(--color-accent-2-400)' : 'transparent'}`, fontWeight: 700, fontSize: 14, color: 'var(--color-neutral-700)' }}>
-                        ₹<input value={q ? String(q.amt) : ''} onChange={e => setFixed(c, n, e.target.value)} inputMode="numeric" placeholder="Varies" aria-label={`Fixed monthly amount for ${n}`} style={{ width: '100%', border: 'none', background: 'transparent', font: '700 14px var(--font-body)', color: 'var(--color-text)', textAlign: 'right', outline: 'none' }} />
+                        ₹<input autoComplete="off" value={q ? String(q.amt) : ''} onChange={e => setFixed(c, n, e.target.value)} inputMode="numeric" placeholder="Varies" aria-label={`Fixed monthly amount for ${n}`} style={{ width: '100%', border: 'none', background: 'transparent', font: '700 14px var(--font-body)', color: 'var(--color-text)', textAlign: 'right', outline: 'none' }} />
                       </label>
                     </div>
                   );

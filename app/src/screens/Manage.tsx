@@ -45,9 +45,9 @@ export function Manage({ ctx }: { ctx: Ctx }) {
         })}
       </div>
       <h5 style={{ margin: '6px 0 0' }}>Add a category</h5>
-      <form onSubmit={e => { e.preventDefault(); addCustom(); }} style={{ display: 'flex', gap: 6, alignItems: 'center', padding: 6, borderRadius: 999, background: 'var(--color-surface)' }}>
-        <input value={emoji} onChange={e => setEmoji(e.target.value)} placeholder="🙂" aria-label="Emoji" maxLength={4} style={{ width: 48, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', textAlign: 'center', fontSize: 20 }} />
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="Category name" aria-label="Category name" style={{ flex: 1, minWidth: 0, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
+      <form autoComplete="off" onSubmit={e => { e.preventDefault(); addCustom(); }} style={{ display: 'flex', gap: 6, alignItems: 'center', padding: 6, borderRadius: 999, background: 'var(--color-surface)' }}>
+        <input autoComplete="off" value={emoji} onChange={e => setEmoji(e.target.value)} placeholder="🙂" aria-label="Emoji" maxLength={4} style={{ width: 48, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', textAlign: 'center', fontSize: 20 }} />
+        <input autoComplete="off" value={name} onChange={e => setName(e.target.value)} placeholder="Category name" aria-label="Category name" style={{ flex: 1, minWidth: 0, height: 44, borderRadius: 999, border: 'none', background: 'var(--color-neutral-100)', padding: '0 14px', font: '500 14px var(--font-body)' }} />
         <button type="submit" className="bp" style={{ height: 44, padding: '0 16px', font: '700 14px var(--font-body)' }}>Add</button>
       </form>
       {suggestions.length > 0 && (

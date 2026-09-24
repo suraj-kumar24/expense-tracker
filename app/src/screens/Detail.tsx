@@ -152,16 +152,16 @@ function DetailSheet({ ctx, cat, kind, close, swap }: { ctx: Ctx; cat: Cat; kind
       ctx.toast(`Saved ${b.trim() || cat.emoji} ${a.trim()}`);
     };
     return (
-      <form {...form(ok)}>
+      <form autoComplete="off" {...form(ok)}>
         <h4 style={{ margin: 0 }}>Edit category</h4>
         <div style={{ display: 'flex', gap: 8 }}>
-          <input value={b} onChange={e => setB(e.target.value)} aria-label="Emoji" maxLength={4} className="field" style={{ width: 60, height: 52, textAlign: 'center', fontSize: 24 }} />
-          <input value={a} onChange={e => setA(e.target.value)} aria-label="Name" className="field" style={{ ...field, flex: 1, minWidth: 0 }} />
+          <input autoComplete="off" value={b} onChange={e => setB(e.target.value)} aria-label="Emoji" maxLength={4} className="field" style={{ width: 60, height: 52, textAlign: 'center', fontSize: 24 }} />
+          <input autoComplete="off" value={a} onChange={e => setA(e.target.value)} aria-label="Name" className="field" style={{ ...field, flex: 1, minWidth: 0 }} />
         </div>
         <label style={{ ...col, gap: 6 }}>
           <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-neutral-700)' }}>Monthly budget</span>
           <span className="field" style={{ display: 'flex', alignItems: 'center', gap: 4, height: 52, padding: '0 18px', font: '700 16px var(--font-body)' }}>
-            ₹<input value={c} onChange={e => setC(e.target.value.replace(/[^\d.]/g, ''))} onFocus={e => e.target.select()} inputMode="decimal" aria-label="Monthly budget" style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', font: '700 16px var(--font-body)', outline: 'none' }} />
+            ₹<input autoComplete="off" value={c} onChange={e => setC(e.target.value.replace(/[^\d.]/g, ''))} onFocus={e => e.target.select()} inputMode="decimal" aria-label="Monthly budget" style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', font: '700 16px var(--font-body)', outline: 'none' }} />
           </span>
           <span style={{ fontSize: 12, color: 'var(--color-neutral-700)' }}>Spent so far: {fmt(d.spent)}</span>
         </label>
@@ -178,9 +178,9 @@ function DetailSheet({ ctx, cat, kind, close, swap }: { ctx: Ctx; cat: Cat; kind
       close();
     };
     return (
-      <form {...form(ok)}>
+      <form autoComplete="off" {...form(ok)}>
         <h4 style={{ margin: 0 }}>New subcategory in {cat.emoji} {cat.name}</h4>
-        <input autoFocus value={a} onChange={e => setA(e.target.value)} placeholder="e.g. Electricity" aria-label="Subcategory name" className="field" style={{ ...field, padding: '0 18px' }} />
+        <input autoComplete="off" autoFocus value={a} onChange={e => setA(e.target.value)} placeholder="e.g. Electricity" aria-label="Subcategory name" className="field" style={{ ...field, padding: '0 18px' }} />
         <Actions close={close} okLabel="Add" disabled={!a.trim()} />
       </form>
     );
@@ -194,11 +194,11 @@ function DetailSheet({ ctx, cat, kind, close, swap }: { ctx: Ctx; cat: Cat; kind
       close();
     };
     return (
-      <form {...form(ok)}>
+      <form autoComplete="off" {...form(ok)}>
         <h4 style={{ margin: 0 }}>New quick amount</h4>
         <div style={{ display: 'flex', gap: 8 }}>
-          <input autoFocus value={a} onChange={e => setA(e.target.value)} placeholder="Label, e.g. Water can" aria-label="Label" className="field" style={{ ...field, font: '600 15px var(--font-body)', flex: 1, minWidth: 0 }} />
-          <input value={b} onChange={e => setB(e.target.value)} placeholder="₹" inputMode="decimal" aria-label="Amount" className="field" style={{ ...field, font: '600 15px var(--font-body)', width: 100 }} />
+          <input autoComplete="off" autoFocus value={a} onChange={e => setA(e.target.value)} placeholder="Label, e.g. Water can" aria-label="Label" className="field" style={{ ...field, font: '600 15px var(--font-body)', flex: 1, minWidth: 0 }} />
+          <input autoComplete="off" value={b} onChange={e => setB(e.target.value)} placeholder="₹" inputMode="decimal" aria-label="Amount" className="field" style={{ ...field, font: '600 15px var(--font-body)', width: 100 }} />
         </div>
         <Actions close={close} okLabel="Add" disabled={!valid} />
       </form>
