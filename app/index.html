@@ -1,15 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f5ead8">
+<title>Khata · monthly budget tracker</title>
+<meta name="description" content="See where your money goes each month, one category at a time. A free budget tracker that lives on your phone. No account, works offline.">
+<meta property="og:title" content="Khata · see where your money goes">
+<meta property="og:description" content="A free monthly budget tracker for your phone. Log in two taps, no account, works offline.">
+<meta property="og:image" content="shots/overview.jpg">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon.svg">
-<title>Khata</title>
+<script>
+  // Opened from the home-screen icon of an older install: go straight to the app.
+  if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) location.replace('app/');
+</script>
 </head>
 <body>
-<div id="root"></div>
-<script type="module" src="/src/main.tsx"></script>
+<header class="nav wrap">
+  <a class="brand" href="./"><span class="mark">₹</span>Khata</a>
+  <a class="pill ghost" href="app/">Open the app</a>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="kicker">Free · Works offline · No sign-up</p>
+      <h1>See where your money goes, one category at a time.</h1>
+      <p class="lede">Khata is a monthly budget tracker for your phone. Log an expense in two taps, watch each category fill up, and know exactly how much you can spend on the fun stuff today.</p>
+      <div class="ctas">
+        <a class="pill primary big" href="#install" data-install>Install Khata</a>
+        <a class="pill ghost big" href="app/">Try it in your browser</a>
+      </div>
+      <p class="fine" data-hint>Works on Android and iPhone. Nothing to download from a store.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+      <span class="emo e1">🏠</span><span class="emo e2">🍜</span><span class="emo e3">🛺</span>
+      <figure class="phone"><img src="shots/overview.jpg" alt="" width="390" height="844"></figure>
+    </div>
+  </section>
+
+  <section class="facts wrap" aria-label="At a glance">
+    <div><b>₹0</b><span>free, no ads</span></div>
+    <div><b>0</b><span>accounts or logins</span></div>
+    <div><b>100%</b><span>stored on your phone</span></div>
+  </section>
+
+  <section class="features wrap">
+    <h2>Budgeting that fits in a chai break</h2>
+    <div class="grid">
+      <article class="card">
+        <span class="ico">⚡</span>
+        <h3>Log it before you forget</h3>
+        <p>Type the amount or slide to it, tap a category, done. Save quick amounts like your daily chai, and fixed bills like rent get filed for you on the 1st.</p>
+      </article>
+      <article class="card">
+        <span class="ico">🚦</span>
+        <h3>Budgets that nudge</h3>
+        <p>Every category shows how much is left. It turns amber when you’re getting close and red when you’re almost out. You choose when.</p>
+      </article>
+      <article class="card sage">
+        <span class="ico">🎬</span>
+        <h3>A daily allowance for fun</h3>
+        <p>Mark eating out, shopping or movies as Wants. Khata divides what’s left by the days left, so you know what today can take.</p>
+      </article>
+      <article class="card">
+        <span class="ico">📈</span>
+        <h3>See the whole year</h3>
+        <p>Month by month or across twelve months: your biggest slices, your highest and lowest months, and what changed since last month.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="screens" aria-label="Screens from the app">
+    <div class="wrap">
+      <h2>Take a look</h2>
+      <p class="lede">Real screens from the app, with sample spending.</p>
+    </div>
+    <div class="rail">
+      <figure><div class="phone"><img src="shots/add.jpg" alt="Adding an expense: an amount keypad, a slider and category chips" loading="lazy" width="390" height="844"></div><figcaption>Add an expense</figcaption></figure>
+      <figure><div class="phone"><img src="shots/wants.jpg" alt="The Wants allowance sheet showing a daily amount" loading="lazy" width="390" height="844"></div><figcaption>Your daily Wants allowance</figcaption></figure>
+      <figure><div class="phone"><img src="shots/insights.jpg" alt="Insights: total spent each month over a year, against the budget" loading="lazy" width="390" height="844"></div><figcaption>Twelve months at a glance</figcaption></figure>
+      <figure><div class="phone"><img src="shots/dark.jpg" alt="The home screen in dark mode" loading="lazy" width="390" height="844"></div><figcaption>Easy on the eyes at night</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="privacy wrap">
+    <div class="band">
+      <span class="ico">📱</span>
+      <div>
+        <h2>Your money stays on your phone</h2>
+        <p>No account, no login, no servers. Everything you log is saved on your device and works without internet. Want a copy? Export a spreadsheet any time from Settings.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="install wrap" id="install">
+    <h2>Get Khata on your phone</h2>
+    <p class="lede">It installs straight from the browser in a few seconds, and opens from your home screen like any other app.</p>
+    <div class="ways">
+      <article class="way" data-for="android">
+        <h3>Android</h3>
+        <button class="pill primary" data-install-btn hidden>Install Khata</button>
+        <ol data-android-steps>
+          <li>Open this page in <b>Chrome</b>.</li>
+          <li>Tap <b>⋮</b>, then <b>Install app</b> (or <b>Add to Home screen</b>).</li>
+          <li>Open Khata from your home screen.</li>
+        </ol>
+      </article>
+      <article class="way" data-for="ios">
+        <h3>iPhone</h3>
+        <ol>
+          <li>Open this page in <b>Safari</b>.</li>
+          <li>Tap the <b>Share</b> button <span class="share" aria-hidden="true">⬆︎</span>.</li>
+          <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+        </ol>
+      </article>
+      <article class="way" data-for="desktop">
+        <h3>On a computer?</h3>
+        <div class="qr" data-qr role="img" aria-label="QR code linking to this page"></div>
+        <p>Scan with your phone’s camera to open this page there.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <span><span class="mark sm">₹</span>Khata</span>
+  <span>Free budget tracker · Your data never leaves your device</span>
+</footer>
+
+<script type="module" src="/src/landing.ts"></script>
 </body>
 </html>

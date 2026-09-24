@@ -2,9 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// GitHub Pages serves the app from /<repo>/, so the build sets BASE=/expense-tracker/.
+// GitHub Pages serves the site from /<repo>/, so the build sets BASE=/expense-tracker/.
+// Two pages: the product page at the root and the app at app/.
 export default defineConfig({
   base: process.env.BASE || '/',
+  build: {
+    rollupOptions: { input: { home: 'index.html', app: 'app/index.html' } }
+  },
   plugins: [
     react(),
     VitePWA({
@@ -13,7 +17,9 @@ export default defineConfig({
       manifest: {
         name: 'Khata',
         short_name: 'Khata',
-        description: 'See where your money goes each month — one category at a time.',
+        description: 'See where your money goes each month, one category at a time.',
+        start_url: 'app/',
+        scope: './',
         theme_color: '#f5ead8',
         background_color: '#f5ead8',
         display: 'standalone',
@@ -21,7 +27,8 @@ export default defineConfig({
         icons: [{ src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,jpg,woff2}'],
+        navigateFallback: null, // each page is precached by its own URL
         runtimeCaching: [{
           urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
           handler: 'CacheFirst',
